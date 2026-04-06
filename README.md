@@ -15,6 +15,39 @@
 
 ---
 
+## 🌐 Live Endpoints
+
+| Service | URL | Status |
+|---------|-----|--------|
+| Agent Zero UI | https://workflowtools.cloud | ✅ Live |
+| Agent Card | https://workflowtools.cloud/.well-known/agent.json | ✅ Live |
+| A2A (FastA2A) | https://workflowtools.cloud/a2a | ✅ Mounted |
+| MCP SSE | https://workflowtools.cloud/mcp/t-{BRIDGE_TOKEN}/sse | ✅ After restart |
+
+---
+
+## 🔐 Authentication
+
+Agent Zero uses a **bridge token** for A2A/MCP access.  
+Token is stored privately — request from the system owner to share with Claude.
+
+**A2A path-based auth:**
+```
+POST https://workflowtools.cloud/a2a/t-{BRIDGE_TOKEN}/
+```
+
+**MCP SSE:**
+```
+GET https://workflowtools.cloud/mcp/t-{BRIDGE_TOKEN}/sse
+```
+
+**Bearer header (alternative):**
+```
+Authorization: Bearer {BRIDGE_TOKEN}
+```
+
+---
+
 ## 🤝 Handoff Protocol
 
 ### Claude → Agent Zero
@@ -31,55 +64,36 @@ expected_output: <brief description>
 ---
 ```
 3. Describe the task in detail below the header
-4. Agent Zero polls this folder on its heartbeat cycle (every 30 min via n8n HEARTBEAT)
+4. Agent Zero monitors this folder via n8n heartbeat (every 30 min) and autonomous polling
 
 ### Agent Zero → Claude
 1. Agent Zero creates a file in `/az-to-claude/` named `RESULT_<YYYYMMDD_HHMMSS>_<topic>.md`
 2. Includes status: `COMPLETE | IN_PROGRESS | FAILED | BLOCKED`
-3. Provides full artifact, code, or report below
-4. Claude polls this folder via browser or scheduled GitHub API calls
+3. Claude polls this folder via GitHub API or browser
 
 ---
 
-## 🔗 Direct A2A Connection (When Available)
+## 🏗️ Agent Identities
 
-Agent Zero supports the **FastA2A protocol** at:
-```
-https://workflowtools.cloud/a2a
-```
-
-Auth via Bearer header or path token:
-```
-POST https://workflowtools.cloud/a2a
-Authorization: Bearer <MCP_SERVER_TOKEN>
-Content-Type: application/json
-```
-
-See `/shared/a2a_request_template.json` for request format.
-
----
-
-## 🌐 Endpoints
-
-| Service | URL | Status |
-|---------|-----|--------|
-| Agent Zero UI | https://workflowtools.cloud | ✅ Live |
-| A2A Endpoint | https://workflowtools.cloud/a2a | ✅ Live |
-| MCP SSE | https://workflowtools.cloud/mcp/sse | ✅ Live |
-| Agent Card | https://workflowtools.cloud/.well-known/agent.json | 🔧 Pending |
-
----
-
-## 🏗️ Agent Zero Identity
-
-- **Name:** Agent Zero (Aether-OS)
+### Agent Zero (Aether-OS)
 - **Host:** VPS via Cloudflare Tunnel (workflowtools.cloud)
-- **Role:** Autonomous AI agent — trading systems, research, infrastructure
-- **Repo:** rollinronin/aether-os-backup
-- **Framework:** github.com/frdel/agent-zero
+- **Role:** Autonomous AI — trading systems, research, infrastructure, code execution
+- **Framework:** Agent Zero (github.com/frdel/agent-zero)
+- **Backup repo:** rollinronin/aether-os-backup
 
-## 🤖 Claude Identity
-
-- **Name:** Claude (Anthropic Cowork)
+### Claude (Anthropic Cowork)  
 - **Role:** Project management, IS portfolio coordination, Metro Transit TCC projects
-- **Channel:** GitHub (allowlisted), browser-based interaction
+- **Channel:** GitHub (allowlisted), browser-based interaction, A2A when available
+
+---
+
+## 📋 Git Clone
+
+```bash
+git clone https://github.com/rollinronin/claude-agent-zero-bridge.git
+```
+
+For authenticated push (Claude needs a PAT with repo scope):
+```bash
+git clone https://{GITHUB_PAT}@github.com/rollinronin/claude-agent-zero-bridge.git
+```
