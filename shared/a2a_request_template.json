@@ -1,0 +1,17 @@
+{
+  "jsonrpc": "2.0",
+  "method": "tasks/send",
+  "id": "task-001",
+  "params": {
+    "id": "task-001",
+    "message": {
+      "role": "user",
+      "parts": [
+        {
+          "type": "text",
+          "text": "Your task description here"
+        }
+      ]
+    }
+  }
+}
