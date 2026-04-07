@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCC IS Portfolio Hub</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --mc:#0054A4;--mc-dark:#003F7E;--mc-deep:#002A55;--mc-mid:#1A6BBF;
+  --mc-light:#D6E8F7;--mc-pale:#EBF4FB;
+  --ink:#0d1117;--ink-2:#2d3748;--ink-3:#64748b;
+  --surface:#fff;--surface-2:#f4f7fb;--surface-3:#e8f0f9;
+  --border:rgba(0,84,164,.09);--border-md:rgba(0,84,164,.16);
+  --red:#cc2222;--red-bg:#fff0f0;--red-ring:#fca5a5;
+  --amber:#c97000;--amber-bg:#fff8ec;--amber-ring:#f5c97a;
+  --green:#157a3c;--green-bg:#edfbf3;--green-ring:#7dd4a2;
+  --font:'Segoe UI',system-ui,-apple-system,sans-serif;
+  --mono:'Cascadia Mono','Consolas','Courier New',monospace;
+  --radius:12px;--radius-sm:8px;
+}
+body{font-family:var(--font);background:var(--surface-2);color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100vh}
+
+/* ══ NAV ══ */
+.nav-shell{background:var(--surface);border-bottom:1px solid var(--border-md);position:sticky;top:0;z-index:100;transition:box-shadow .2s}
+.nav-shell.scrolled{box-shadow:0 2px 20px rgba(0,84,164,.12)}
+.nav-top{display:flex;align-items:center;padding:0 24px;height:50px;border-bottom:1px solid var(--border);gap:6px}
+.nav-wordmark{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;margin-right:20px}
+.nav-site-name{font-size:13px;font-weight:600;color:var(--mc-deep);letter-spacing:-.01em;line-height:1}
+.nav-site-sub{font-size:9px;font-weight:500;color:var(--ink-3);letter-spacing:.04em;text-transform:uppercase;line-height:1;margin-top:2px}
+.nav-items{display:flex;align-items:stretch;gap:0;flex:1;height:100%}
+.nav-item{display:flex;align-items:center;padding:0 14px;font-size:12px;font-weight:500;color:var(--ink-3);text-decoration:none;border-bottom:2.5px solid transparent;transition:color .12s,border-color .12s;cursor:pointer;white-space:nowrap}
+.nav-item:hover{color:var(--mc)}
+.nav-item.active{color:var(--mc);border-bottom-color:var(--mc);font-weight:600}
+.nav-right{display:flex;align-items:center;gap:10px;margin-left:auto;flex-shrink:0}
+.alert-badge{display:flex;align-items:center;gap:5px;background:var(--red-bg);border:1px solid var(--red-ring);color:var(--red);font-size:10px;font-weight:600;padding:3px 9px;border-radius:20px;cursor:pointer;transition:opacity .2s}
+.alert-badge.hidden{opacity:0;pointer-events:none}
+.alert-dot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:pulse-r 2s ease-in-out infinite}
+@keyframes pulse-r{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.5)}}
+.nav-date{font-family:var(--mono);font-size:10px;color:var(--ink-3);background:var(--surface-3);padding:3px 9px;border-radius:20px;border:1px solid var(--border-md)}
+.nav-projects{display:flex;align-items:center;padding:0 24px;height:38px;gap:6px;overflow-x:auto}
+.nav-projects::-webkit-scrollbar{display:none}
+.proj-chip{display:flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:500;color:var(--ink-2);border:1px solid var(--border-md);background:var(--surface);cursor:pointer;text-decoration:none;white-space:nowrap;transition:all .12s;flex-shrink:0}
+.proj-chip:hover{background:var(--mc-pale);color:var(--mc);border-color:var(--mc-light)}
+.proj-chip.active{background:var(--mc-pale);border-color:var(--mc);color:var(--mc);font-weight:600}
+.proj-rag{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.chip-div{width:1px;height:18px;background:var(--border-md);flex-shrink:0;margin:0 4px}
+.sec-chip{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;color:var(--ink-3);cursor:pointer;white-space:nowrap;transition:all .12s;flex-shrink:0;border:1px solid transparent;text-decoration:none}
+.sec-chip:hover,.sec-chip.active{color:var(--mc);background:var(--mc-pale);border-color:var(--mc-light)}
+
+/* ══ PAGE ══ */
+.page-body{padding:24px;max-width:1300px;margin:0 auto}
+.section-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.section-heading h3{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mc-dark)}
+.as-of{font-family:var(--mono);font-size:10px;color:var(--ink-3);background:var(--surface-3);padding:3px 9px;border-radius:20px;border:1px solid var(--border-md)}
+
+/* ══ HERO ══ */
+.hero{background:var(--mc-deep);border-radius:var(--radius);padding:28px 32px;margin-bottom:20px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50px;right:-50px;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,.04);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-70px;right:80px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.03);pointer-events:none}
+.hero-inner{position:relative;z-index:1}
+.hero-h{font-size:26px;font-weight:700;color:#fff;letter-spacing:-.02em;margin-bottom:6px;line-height:1.2}
+.hero-sub{font-size:13px;color:rgba(255,255,255,.6);line-height:1.6;max-width:700px}
+.hero-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:20px;font-size:11px;font-weight:500;border:1px solid}
+.pill.green{background:rgba(21,122,60,.18);color:#5dba82;border-color:rgba(93,186,130,.35)}
+.pill.amber{background:rgba(201,112,0,.18);color:#f5a623;border-color:rgba(245,166,35,.35)}
+.pill.red{background:rgba(204,34,34,.18);color:#f87171;border-color:rgba(248,113,113,.35)}
+.pill.blue{background:rgba(255,255,255,.09);color:rgba(255,255,255,.75);border-color:rgba(255,255,255,.18)}
+.pill-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+.hero-meta{display:flex;align-items:center;gap:14px;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.1)}
+.hero-meta-item{font-size:10px;color:rgba(255,255,255,.45);display:flex;align-items:center;gap:5px}
+.hero-meta-item strong{color:rgba(255,255,255,.7);font-weight:600}
+
+/* ══ GATE BANNER ══ */
+.gate-banner{background:linear-gradient(90deg,#fffbeb 0%,var(--surface) 70%);border:1px solid var(--amber-ring);border-left:3px solid var(--amber);border-radius:var(--radius-sm);padding:10px 16px;margin-bottom:20px;display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--ink-2);line-height:1.6}
+.gate-dot{width:8px;height:8px;border-radius:50%;background:var(--amber);flex-shrink:0;margin-top:3px;animation:pulse-a 2s ease-in-out infinite}
+@keyframes pulse-a{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+
+/* ══ PROJECT CARDS ══ */
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+@media(max-width:960px){.cards-grid{grid-template-columns:1fr}}
+.card{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);padding:20px;position:relative;overflow:hidden;transition:box-shadow .15s,transform .15s;animation:fadeUp .4s ease both;text-decoration:none;color:inherit;display:block}
+.card:hover{box-shadow:0 6px 28px rgba(0,84,164,.11);transform:translateY(-2px)}
+.card:nth-child(1){animation-delay:.05s}.card:nth-child(2){animation-delay:.10s}.card:nth-child(3){animation-delay:.15s}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--radius) var(--radius) 0 0}
+.exp-accent::before{background:var(--mc)}
+.ng911-accent::before{background:#7c3aed}
+.vuw-accent::before{background:#0d9488}
+.card-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
+.proj-tag{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.exp-tag{color:var(--mc)}.ng911-tag{color:#7c3aed}.vuw-tag{color:#0d9488}
+.proj-name{font-size:15px;font-weight:600;color:var(--ink);line-height:1.2}
+.proj-role{font-size:11px;color:var(--ink-3);margin-top:3px;line-height:1.4}
+.rag-badge{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;flex-shrink:0;margin-left:10px}
+.rag-dot{width:6px;height:6px;border-radius:50%}
+.rag-badge.green{background:var(--green-bg);color:var(--green);border:1px solid var(--green-ring)}.rag-dot.green{background:var(--green)}
+.rag-badge.amber{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-ring)}.rag-dot.amber{background:var(--amber)}
+.rag-badge.red{background:var(--red-bg);color:var(--red);border:1px solid var(--red-ring)}.rag-dot.red{background:var(--red)}
+.rag-badge.loading{background:var(--surface-3);color:var(--ink-3);border:1px solid var(--border-md)}
+.stat-row{display:flex;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;margin:12px 0}
+.stat{flex:1;padding:9px 0;text-align:center;border-right:1px solid var(--border)}
+.stat:last-child{border-right:none}
+.stat-n{font-family:var(--mono);font-size:18px;font-weight:500;line-height:1;display:block;margin-bottom:2px}
+.stat-n.mc{color:var(--mc)}.stat-n.red{color:var(--red)}.stat-n.amber{color:var(--amber)}.stat-n.green{color:var(--green)}.stat-n.muted{color:var(--ink-3)}
+.stat-l{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-3)}
+.next-ms{background:var(--mc-pale);border:1px solid var(--mc-light);border-radius:var(--radius-sm);padding:9px 11px;display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.next-ms-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--mc);margin-bottom:3px}
+.next-ms-name{font-size:11px;font-weight:500;color:var(--ink);line-height:1.35}
+.next-ms-date{font-family:var(--mono);font-size:10px;color:var(--ink-3);white-space:nowrap;flex-shrink:0;margin-top:2px}
+.next-ms-date.soon{color:var(--amber);font-weight:600}
+.card-footer{border-top:1px solid var(--border);padding:9px 0 0;margin-top:12px;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--mc);font-weight:500}
+.card-footer span{color:var(--ink-3);font-weight:400}
+
+/* ══ BOTTOM GRID ══ */
+.bottom-grid{display:grid;grid-template-columns:2fr 1fr;gap:14px}
+@media(max-width:960px){.bottom-grid{grid-template-columns:1fr}}
+
+/* ══ LINKS CARD ══ */
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+.panel-title{font-size:12px;font-weight:700;color:var(--mc-dark);margin-bottom:14px;padding-bottom:9px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.panel-title span{font-size:10px;font-weight:500;color:var(--ink-3)}
+.link-group{margin-bottom:14px}
+.link-group:last-child{margin-bottom:0}
+.link-group-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-3);margin-bottom:7px}
+.link-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:6px;text-decoration:none;color:var(--ink-2);font-size:12px;font-weight:500;transition:background .12s;border:1px solid transparent}
+.link-item:hover{background:var(--mc-pale);border-color:var(--mc-light);color:var(--mc)}
+.link-icon{font-size:13px;flex-shrink:0;width:20px;text-align:center}
+.link-badge{font-size:9px;font-weight:700;padding:1px 6px;border-radius:8px;margin-left:auto;flex-shrink:0}
+.link-badge.red{background:var(--red-bg);color:var(--red);border:1px solid var(--red-ring)}
+.link-badge.amber{background:var(--amber-bg);color:var(--amber)}
+.link-badge.new{background:var(--mc-pale);color:var(--mc);border:1px solid var(--mc-light)}
+
+/* ══ ACTIONS CARD ══ */
+.action-item{padding:9px 11px;border-radius:7px;border:1px solid var(--border);margin-bottom:7px;font-size:11px;line-height:1.45}
+.action-item:last-child{margin-bottom:0}
+.action-item.red{border-color:var(--red-ring);background:var(--red-bg)}
+.action-item.amber{border-color:var(--amber-ring);background:var(--amber-bg)}
+.action-item.complete{border-color:var(--green-ring);background:var(--green-bg);opacity:.75}
+.action-proj{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px}
+.action-item.red .action-proj{color:var(--red)}
+.action-item.amber .action-proj{color:var(--amber)}
+.action-item.complete .action-proj{color:var(--green)}
+.action-text{color:var(--ink);font-weight:500}
+.action-owner{font-size:10px;color:var(--ink-3);margin-top:3px}
+
+/* ══ LIVE STATUS INDICATOR ══ */
+.live-row{display:flex;align-items:center;gap:8px}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+.live-dot.loading{background:var(--amber);animation:pulse-a 1.5s ease-in-out infinite}
+.live-dot.error{background:var(--red)}
+.live-label{font-size:10px;color:var(--ink-3)}
+
+/* ══ SPINNER ══ */
+.spinner{display:inline-block;width:12px;height:12px;border:2px solid var(--mc-light);border-top-color:var(--mc);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ══ STEERCO FOOTER ══ */
+.steerco-next{margin-top:12px;padding:9px 11px;background:var(--mc-pale);border:1px solid var(--mc-light);border-radius:7px;font-size:11px;color:var(--mc)}
+.steerco-next strong{font-weight:600}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav-shell" id="navShell">
+  <div class="nav-top">
+    <a class="nav-wordmark" href="#">
+      <svg width="28" height="28" viewBox="0 0 30 30" fill="none"><polygon points="15,2 28,26 2,26" fill="#0054A4"/><polygon points="15,8 23.5,22 6.5,22" fill="#fff" opacity=".25"/></svg>
+      <div>
+        <div class="nav-site-name">IS Portfolio Hub</div>
+        <div class="nav-site-sub">Metropolitan Council · Metro Transit</div>
+      </div>
+    </a>
+    <div class="nav-items">
+      <a class="nav-item active" href="#">Overview</a>
+      <a class="nav-item" href="#raid">RAID Log</a>
+      <a class="nav-item" href="#milestones">Milestones</a>
+      <a class="nav-item" href="#steerco">SteerCo</a>
+      <a class="nav-item" href="#docs">Documents</a>
+    </div>
+    <div class="nav-right">
+      <div class="alert-badge hidden" id="alertBadge">
+        <div class="alert-dot"></div>
+        <span id="alertCount">0 Red</span>
+      </div>
+      <div class="nav-date" id="navDate">—</div>
+    </div>
+  </div>
+  <div class="nav-projects">
+    <a class="proj-chip active" href="#">
+      <div class="proj-rag" style="background:var(--mc)"></div>
+      All Projects
+    </a>
+    <div class="chip-div"></div>
+    <a class="proj-chip" href="#">
+      <div class="proj-rag" id="exp-rag-chip" style="background:var(--amber)"></div>
+      <span style="font-family:var(--mono);font-size:9px;opacity:.6">#222</span> TCC Expansion
+    </a>
+    <a class="proj-chip" href="#">
+      <div class="proj-rag" id="vuw-rag-chip" style="background:var(--red)"></div>
+      <span style="font-family:var(--mono);font-size:9px;opacity:.6">#11138</span> VuWall
+    </a>
+    <a class="proj-chip" href="#">
+      <div class="proj-rag" id="ng911-rag-chip" style="background:var(--amber)"></div>
+      <span style="font-family:var(--mono);font-size:9px;opacity:.6">#193</span> NG911 Refresh
+    </a>
+    <div class="chip-div"></div>
+    <a class="sec-chip" href="#raid">⚠️ RAID Log</a>
+    <a class="sec-chip" href="#docs">📋 Documents</a>
+    <a class="sec-chip" href="#steerco">📅 SteerCo</a>
+  </div>
+</nav>
+
+<div class="page-body">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-h">TCC IS Projects — Portfolio Overview</div>
+      <div class="hero-sub">Three concurrent IS projects supporting the Transit Control Center expansion. Single source of truth for project status, milestones, RAID tracking, and documents.</div>
+      <div class="hero-pills" id="heroPills">
+        <span class="pill blue"><span class="pill-dot"></span>IS PM: PT (Ptahmes Tat-Siaka)</span>
+        <span class="pill blue" id="heroRefresh"><span class="spinner"></span> Loading live data…</span>
+      </div>
+      <div class="hero-meta">
+        <div class="hero-meta-item"><strong>Site:</strong> TCCISPortfolioHub · metcmn.sharepoint.com</div>
+        <div class="hero-meta-item"><strong>Phase:</strong> Phase 1 — EBC Buildout</div>
+        <div class="hero-meta-item"><strong>Hard Stop:</strong> Apr 29–30, 2026</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONSTRUCTION GATE BANNER -->
+  <div class="gate-banner">
+    <div class="gate-dot"></div>
+    <div>
+      <strong style="color:var(--amber)">Construction Gate:</strong>
+      Notice of Award pending · NTP expected mid-late April 2026 (Robert Rimstad, SteerCo Mar 25) · Working assumption: construction activity September 2026 ·
+      EBC Room 1007, OMF St. Paul (temp ops). IS milestone dates derive from construction schedule.
+      <strong style="color:var(--ink-2)">1:1 Slip Rule applies.</strong>
+    </div>
+  </div>
+
+  <!-- PROJECT STATUS CARDS -->
+  <div class="section-heading">
+    <h3>Project Status</h3>
+    <div class="live-row">
+      <div class="live-dot loading" id="liveDot"></div>
+      <div class="live-label" id="liveLabel">Loading live data…</div>
+    </div>
+  </div>
+
+  <div class="cards-grid">
+
+    <!-- EXP CARD -->
+    <a class="card exp-accent" href="#">
+      <div class="card-head">
+        <div>
+          <div class="proj-tag exp-tag">EXP · IS Lead · #222</div>
+          <div class="proj-name">TCC Console Expansion</div>
+          <div class="proj-role">IS Infrastructure Refresh · 60 PCs · Phase 1: EBC Buildout</div>
+        </div>
+        <div class="rag-badge loading" id="exp-rag-badge"><div class="rag-dot" id="exp-rag-dot"></div><span id="exp-rag-text"><span class="spinner"></span></span></div>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><span class="stat-n mc" id="exp-stat-pcs">16</span><span class="stat-l">EBC PCs</span></div>
+        <div class="stat"><span class="stat-n red" id="exp-stat-red">—</span><span class="stat-l">Open Red</span></div>
+        <div class="stat"><span class="stat-n muted" id="exp-stat-raid">—</span><span class="stat-l">RAID Items</span></div>
+      </div>
+      <div class="next-ms">
+        <div>
+          <div class="next-ms-lbl">Next Milestone</div>
+          <div class="next-ms-name">EBC Operational — 7 stations, Room 1007</div>
+        </div>
+        <div class="next-ms-date soon">Apr 30</div>
+      </div>
+      <div class="card-footer">View EXP details <span>IS Lead →</span></div>
+    </a>
+
+    <!-- VUW CARD -->
+    <a class="card vuw-accent" href="#">
+      <div class="card-head">
+        <div>
+          <div class="proj-tag vuw-tag">VUW · IS Coordination · #11138</div>
+          <div class="proj-name">VuWall Video Wall / KVM</div>
+          <div class="proj-role">POC in progress · PO issued Mar 26 · Non-refundable</div>
+        </div>
+        <div class="rag-badge loading" id="vuw-rag-badge"><div class="rag-dot" id="vuw-rag-dot"></div><span id="vuw-rag-text"><span class="spinner"></span></span></div>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><span class="stat-n red" id="vuw-stat-red">—</span><span class="stat-l">Open Red</span></div>
+        <div class="stat"><span class="stat-n amber" id="vuw-stat-amber">—</span><span class="stat-l">Open Amber</span></div>
+        <div class="stat"><span class="stat-n muted" id="vuw-stat-raid">—</span><span class="stat-l">RAID Items</span></div>
+      </div>
+      <div class="next-ms">
+        <div>
+          <div class="next-ms-lbl">Next Milestone</div>
+          <div class="next-ms-name" id="vuw-next-ms">BCA design docs submitted</div>
+        </div>
+        <div class="next-ms-date soon" id="vuw-next-date">Jun 2026</div>
+      </div>
+      <div class="card-footer">View VUW details <span>IS Coord →</span></div>
+    </a>
+
+    <!-- NG911 CARD -->
+    <a class="card ng911-accent" href="#">
+      <div class="card-head">
+        <div>
+          <div class="proj-tag ng911-tag">NG911 · IS Coordination · #193</div>
+          <div class="proj-name">NG911 Refresh</div>
+          <div class="proj-role">Cloud-hosted managed solution · FE-led RFP · Multi-year</div>
+        </div>
+        <div class="rag-badge loading" id="ng911-rag-badge"><div class="rag-dot" id="ng911-rag-dot"></div><span id="ng911-rag-text"><span class="spinner"></span></span></div>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><span class="stat-n red" id="ng911-stat-red">—</span><span class="stat-l">Open Red</span></div>
+        <div class="stat"><span class="stat-n amber" id="ng911-stat-amber">—</span><span class="stat-l">Open Amber</span></div>
+        <div class="stat"><span class="stat-n muted" id="ng911-stat-raid">—</span><span class="stat-l">RAID Items</span></div>
+      </div>
+      <div class="next-ms">
+        <div>
+          <div class="next-ms-lbl">Next Milestone</div>
+          <div class="next-ms-name">Deep-dive RFP requirements workshop</div>
+        </div>
+        <div class="next-ms-date">TBD / FE-led</div>
+      </div>
+      <div class="card-footer">View NG911 details <span>IS Coord →</span></div>
+    </a>
+
+  </div><!-- /cards-grid -->
+
+  <!-- BOTTOM GRID -->
+  <div class="bottom-grid">
+
+    <!-- QUICK LINKS -->
+    <div class="panel">
+      <div class="panel-title">Quick Links — Documents &amp; Lists</div>
+
+      <div class="link-group">
+        <div class="link-group-label">Project Artifacts</div>
+        <a class="link-item" href="#"><span class="link-icon">📋</span>Project Charter — TCC Expansion v1.0 <span class="link-badge new">New</span></a>
+        <a class="link-item" href="#"><span class="link-icon">👥</span>RACI Matrix — TCC Expansion v1.0 <span class="link-badge new">New</span></a>
+        <a class="link-item" href="#"><span class="link-icon">📐</span>Scope Statement — TCC Expansion v1.0 <span class="link-badge new">New</span></a>
+        <a class="link-item" href="#"><span class="link-icon">🗂️</span>Stakeholder Register v1.0 <span class="link-badge new">New</span></a>
+        <a class="link-item" href="#"><span class="link-icon">📣</span>Communication Plan v1.0 <span class="link-badge new">New</span></a>
+        <a class="link-item" href="#"><span class="link-icon">📊</span>WBS — Reconciled 926 Tasks <span class="link-badge new">Mar 27</span></a>
+        <a class="link-item" href="#" id="raidLink"><span class="link-icon">⚠️</span>RAID Log — IS Project RAID List <span class="link-badge red" id="raidBadge">Loading…</span></a>
+      </div>
+
+      <div class="link-group">
+        <div class="link-group-label">Meeting Notes &amp; Recordings</div>
+        <a class="link-item" href="#"><span class="link-icon">🎥</span>SteerCo Inaugural — March 25, 2026</a>
+        <a class="link-item" href="#"><span class="link-icon">📝</span>SteerCo Meeting Notes — March 25, 2026</a>
+        <a class="link-item" href="#"><span class="link-icon">📝</span>IS Infra PM Meeting — March 27, 2026</a>
+      </div>
+
+      <div class="link-group">
+        <div class="link-group-label">SharePoint Lists</div>
+        <a class="link-item" href="https://metcmn.sharepoint.com/sites/TCCISPortfolioHub/Lists/IS%20Project%20RAID" target="_parent"><span class="link-icon">📋</span>IS Project RAID</a>
+        <a class="link-item" href="https://metcmn.sharepoint.com/sites/TCCISPortfolioHub/Lists/IS%20Project%20Tasks" target="_parent"><span class="link-icon">📋</span>IS Project Tasks</a>
+        <a class="link-item" href="https://metcmn.sharepoint.com/sites/TCCISPortfolioHub/Lists/IS%20Milestones" target="_parent"><span class="link-icon">📋</span>IS Milestones</a>
+        <a class="link-item" href="https://metcmn.sharepoint.com/sites/TCCISPortfolioHub/Lists/IS%20Status%20Summary" target="_parent"><span class="link-icon">📋</span>IS Status Summary</a>
+      </div>
+    </div>
+
+    <!-- STEERCO ACTIONS -->
+    <div class="panel" id="steerco">
+      <div class="panel-title">Open SteerCo Actions <span>As of Mar 25, 2026</span></div>
+
+      <div class="action-item red">
+        <div class="action-proj">TCC Expansion</div>
+        <div class="action-text">Dedicated endpoint resource — confirm who and when</div>
+        <div class="action-owner">Owner: Gretchen White · Due: Apr 22 SteerCo</div>
+      </div>
+      <div class="action-item amber">
+        <div class="action-proj">TCC Expansion</div>
+        <div class="action-text">Apr 30 EBC target — formal dependency review</div>
+        <div class="action-owner">Owner: IS PM · Due: Apr 22 SteerCo</div>
+      </div>
+      <div class="action-item complete">
+        <div class="action-proj">VuWall · Confirmed Mar 26 ✓</div>
+        <div class="action-text">PO path and timeline confirmed — non-refundable POC issued</div>
+        <div class="action-owner">Owner: Tina Folch · Complete</div>
+      </div>
+      <div class="action-item amber">
+        <div class="action-proj">VuWall</div>
+        <div class="action-text">IS resource for POC support — confirm assignment</div>
+        <div class="action-owner">Owner: IS PM + Paul Burke · After Mar 27 meeting</div>
+      </div>
+      <div class="action-item amber">
+        <div class="action-proj">All Projects</div>
+        <div class="action-text">Room 1007 power specs to contractor (UPS shared infrastructure)</div>
+        <div class="action-owner">Owner: Paul Burke + IES · ASAP</div>
+      </div>
+
+      <div class="steerco-next">
+        <strong>Next SteerCo:</strong> Wednesday April 22, 2026<br>
+        Monthly cadence · IS PM facilitating · All sponsors required
+      </div>
+    </div>
+
+  </div><!-- /bottom-grid -->
+
+</div><!-- /page-body -->
+
+<script>
+// ─── CONFIG ───────────────────────────────────────────────
+const SITE = 'https://metcmn.sharepoint.com/sites/TCCISPortfolioHub';
+const H = { Accept:'application/json;odata=nometadata', 'Content-Type':'application/json' };
+
+// ─── UTILITIES ────────────────────────────────────────────
+function setLive(status, label) {
+  const dot = document.getElementById('liveDot');
+  const lbl = document.getElementById('liveLabel');
+  dot.className = 'live-dot' + (status === 'loading' ? ' loading' : status === 'error' ? ' error' : '');
+  lbl.textContent = label;
+}
+
+function setDate() {
+  const d = new Date();
+  const opts = { month:'short', day:'numeric', year:'numeric', hour:'2-digit', minute:'2-digit' };
+  document.getElementById('navDate').textContent = d.toLocaleString('en-US', opts);
+}
+
+function setRAGBadge(prefix, rag) {
+  const badge = document.getElementById(prefix + '-rag-badge');
+  const dot   = document.getElementById(prefix + '-rag-dot');
+  const text  = document.getElementById(prefix + '-rag-text');
+  const chip  = document.getElementById(prefix + '-rag-chip');
+  if (!badge) return;
+  const cls = rag.toLowerCase();
+  badge.className = 'rag-badge ' + cls;
+  dot.className   = 'rag-dot ' + cls;
+  text.textContent = rag.charAt(0).toUpperCase() + rag.slice(1);
+  if (chip) chip.style.background = cls === 'red' ? 'var(--red)' : cls === 'amber' ? 'var(--amber)' : 'var(--green)';
+}
+
+function setStat(id, val, cls) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = val;
+  if (cls) el.className = 'stat-n ' + cls;
+}
+
+// ─── RAG DETERMINATION ────────────────────────────────────
+function deriveRAG(items) {
+  const open = items.filter(i => (i.Status || '').toLowerCase() !== 'closed');
+  const redCount = open.filter(i => (i.RAG_x0020_Status || '').toLowerCase() === 'red').length;
+  const ambCount = open.filter(i => (i.RAG_x0020_Status || '').toLowerCase() === 'amber').length;
+  if (redCount > 0) return { rag:'red', red:redCount, amber:ambCount, total:items.length };
+  if (ambCount > 0) return { rag:'amber', red:0, amber:ambCount, total:items.length };
+  return { rag:'green', red:0, amber:0, total:items.length };
+}
+
+// ─── MAIN DATA LOAD ───────────────────────────────────────
+async function loadData() {
+  setDate();
+  setLive('loading', 'Loading live data…');
+
+  try {
+    // Pull RAID items - all projects
+    const url = SITE + '/_api/web/lists/getbytitle('IS Project RAID')/items?' +
+      '$select=Title,Project,RAID_x0020_Type,RAG_x0020_Status,Status&$top=500';
+    const resp = await fetch(url, { headers: H, credentials: 'include' });
+
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const data = await resp.json();
+    const items = data.value || [];
+
+    // Partition by project
+    const proj = {
+      exp:   items.filter(i => (i.Project||'').includes('Expansion')),
+      vuw:   items.filter(i => (i.Project||'').includes('VuWall') || (i.Project||'').includes('VUW')),
+      ng911: items.filter(i => (i.Project||'').includes('911')),
+    };
+
+    // EXP stats
+    const exp = deriveRAG(proj.exp);
+    setRAGBadge('exp', exp.rag);
+    setStat('exp-stat-red',  exp.red,   'red');
+    setStat('exp-stat-raid', exp.total, 'muted');
+
+    // VUW stats
+    const vuw = deriveRAG(proj.vuw);
+    setRAGBadge('vuw', vuw.rag);
+    setStat('vuw-stat-red',   vuw.red,   'red');
+    setStat('vuw-stat-amber', vuw.amber, 'amber');
+    setStat('vuw-stat-raid',  vuw.total, 'muted');
+
+    // NG911 stats
+    const ng = deriveRAG(proj.ng911);
+    setRAGBadge('ng911', ng.rag);
+    setStat('ng911-stat-red',   ng.red,   'red');
+    setStat('ng911-stat-amber', ng.amber, 'amber');
+    setStat('ng911-stat-raid',  ng.total, 'muted');
+
+    // Total red count for alert badge
+    const totalRed = exp.red + vuw.red + ng.red;
+    if (totalRed > 0) {
+      const badge = document.getElementById('alertBadge');
+      badge.classList.remove('hidden');
+      document.getElementById('alertCount').textContent = totalRed + ' Red Item' + (totalRed > 1 ? 's' : '');
+    }
+
+    // RAID badge on link
+    document.getElementById('raidBadge').textContent = items.length + ' Items';
+
+    // Hero pills - project RAG
+    const heroRefresh = document.getElementById('heroRefresh');
+    heroRefresh.className = 'pill blue';
+    heroRefresh.innerHTML = '<span class="pill-dot"></span>Last refreshed: ' +
+      new Date().toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'});
+
+    // Add project RAG pills to hero
+    const pills = document.getElementById('heroPills');
+    const ragPill = (label, rag) => {
+      const cls = rag === 'red' ? 'red' : rag === 'amber' ? 'amber' : 'green';
+      return '<span class="pill ' + cls + '"><span class="pill-dot"></span>' + label + '</span>';
+    };
+    pills.innerHTML =
+      ragPill('EXP — ' + exp.rag.charAt(0).toUpperCase()+exp.rag.slice(1), exp.rag) +
+      ragPill('VUW — ' + vuw.rag.charAt(0).toUpperCase()+vuw.rag.slice(1), vuw.rag) +
+      ragPill('NG911 — ' + ng.rag.charAt(0).toUpperCase()+ng.rag.slice(1), ng.rag) +
+      '<span class="pill blue"><span class="pill-dot"></span>IS PM: PT (Ptahmes Tat-Siaka)</span>' +
+      '<span class="pill blue" id="heroRefresh"><span class="pill-dot"></span>Live as of ' +
+      new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}) + '</span>';
+
+    setLive('ok', 'Live data · IS Project RAID · ' + items.length + ' items');
+
+  } catch (err) {
+    setLive('error', 'Static mode — live data unavailable (' + err.message + ')'  );
+    // Fallback static values
+    setRAGBadge('exp',   'amber');
+    setRAGBadge('vuw',   'red');
+    setRAGBadge('ng911', 'amber');
+    setStat('exp-stat-red',   '4', 'red');
+    setStat('exp-stat-raid',  '14', 'muted');
+    setStat('vuw-stat-red',   '3', 'red');
+    setStat('vuw-stat-amber', '2', 'amber');
+    setStat('vuw-stat-raid',  '9', 'muted');
+    setStat('ng911-stat-red',   '1', 'red');
+    setStat('ng911-stat-amber', '2', 'amber');
+    setStat('ng911-stat-raid',  '6', 'muted');
+    document.getElementById('raidBadge').textContent = '33 Items';
+    const heroRefresh = document.getElementById('heroRefresh');
+    if (heroRefresh) { heroRefresh.className = 'pill amber'; heroRefresh.innerHTML = '<span class="pill-dot"></span>Static mode'; }
+  }
+}
+
+// Sticky nav shadow
+window.addEventListener('scroll', () => {
+  document.getElementById('navShell').classList.toggle('scrolled', window.scrollY > 10);
+});
+
+// Boot
+loadData();
+</script>
+</body>
+</html>
