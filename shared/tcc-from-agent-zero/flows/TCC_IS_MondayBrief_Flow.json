@@ -1,0 +1,244 @@
+{
+  "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "flowDisplayName": "TCC IS Portfolio — Monday Morning Brief",
+    "description": "Scheduled Monday 6:00 AM. Queries IS Project Tasks, IS Project RAID, IS Milestones, and Construction Gates SharePoint Lists. Calls Claude API for synthesis. Saves analysis to SharePoint Portfolio Hub. Posts Teams notification.",
+    "author": "IS Senior PM / PMO",
+    "version": "1.0",
+    "lastUpdated": "2026-03-26"
+  },
+  "triggers": {
+    "Recurrence_Monday_6AM": {
+      "type": "Recurrence",
+      "recurrence": {
+        "frequency": "Week",
+        "interval": 1,
+        "schedule": {
+          "weekDays": ["Monday"],
+          "hours": ["6"],
+          "minutes": ["0"]
+        },
+        "timeZone": "Central Standard Time"
+      }
+    }
+  },
+  "actions": {
+
+    "Step_01_Get_Current_Date": {
+      "type": "Expression",
+      "inputs": {
+        "value": "@{formatDateTime(utcNow(), 'yyyy-MM-dd')}"
+      },
+      "runAfter": {}
+    },
+
+    "Step_02_Get_RAID_Red_Items": {
+      "type": "OpenApiConnection",
+      "inputs": {
+        "host": {
+          "connectionName": "shared_sharepointonline",
+          "operationId": "GetItems",
+          "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+        },
+        "parameters": {
+          "dataset": "https://metcmn.sharepoint.com/sites/TCCISPortfolioHub",
+          "table": "IS Project RAID",
+          "$filter": "RAGStatus eq 'Red' and Status ne 'Closed'",
+          "$select": "Title,Project,RAIDType,Owner,DueDate,Status,RAGStatus",
+          "$orderby": "DueDate asc",
+          "$top": 50
+        }
+      },
+      "runAfter": {
+        "Step_01_Get_Current_Date": ["Succeeded"]
+      }
+    },
+
+    "Step_03_Get_Active_Milestones": {
+      "type": "OpenApiConnection",
+      "inputs": {
+        "host": {
+          "connectionName": "shared_sharepointonline",
+          "operationId": "GetItems",
+          "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+        },
+        "parameters": {
+          "dataset": "https://metcmn.sharepoint.com/sites/TCCISPortfolioHub",
+          "table": "IS Milestones",
+          "$filter": "Task_x0020_Type eq 'Milestone' and Status ne 'Closed'",
+          "$select": "Title,Project,Planned_x0020_End,Status,RAGStatus,Predecessors,Notes",
+          "$orderby": "Planned_x0020_End asc",
+          "$top": 25
+        }
+      },
+      "runAfter": {
+        "Step_01_Get_Current_Date": ["Succeeded"]
+      }
+    },
+
+    "Step_04_Get_Construction_Gates": {
+      "type": "OpenApiConnection",
+      "inputs": {
+        "host": {
+          "connectionName": "shared_sharepointonline",
+          "operationId": "GetItems",
+          "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+        },
+        "parameters": {
+          "dataset": "https://metcmn.sharepoint.com/sites/TCCISPortfolioHub",
+          "table": "Construction Gates",
+          "$filter": "Status ne 'Closed'",
+          "$select": "Title,Project,Planned_x0020_End,Status,RAGStatus,Notes",
+          "$orderby": "Planned_x0020_End asc",
+          "$top": 10
+        }
+      },
+      "runAfter": {
+        "Step_01_Get_Current_Date": ["Succeeded"]
+      }
+    },
+
+    "Step_05_Get_Open_Actions_Due_This_Week": {
+      "type": "OpenApiConnection",
+      "inputs": {
+        "host": {
+          "connectionName": "shared_sharepointonline",
+          "operationId": "GetItems",
+          "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+        },
+        "parameters": {
+          "dataset": "https://metcmn.sharepoint.com/sites/TCCISPortfolioHub",
+          "table": "IS Project RAID",
+          "$filter": "RAIDType eq 'Action' and Status ne 'Closed' and DueDate le '@{addDays(utcNow(), 7)}'",
+          "$select": "Title,Project,Owner,DueDate,Status,RAGStatus",
+          "$orderby": "DueDate asc",
+          "$top": 20
+        }
+      },
+      "runAfter": {
+        "Step_01_Get_Current_Date": ["Succeeded"]
+      }
+    },
+
+    "Step_06_Compose_Claude_Prompt": {
+      "type": "Compose",
+      "inputs": {
+        "systemPrompt": "You are the Senior IS Project Manager at Metro Transit (Twin Cities Metropolitan Council), managing a portfolio of three Infrastructure Services projects at the Transit Control Center (TCC):\n\n1. TCC Expansion (EXP) — IS lead. PC refresh for 30 consoles: 60 IS PCs total. Construction-dependent schedule. NTP pending.\n2. Solacom NG911 Refresh (NG911) — IS coordination. FE leads RFP. IS goal: new vendor owns 100% end-to-end support, eliminating 4 dedicated Mitel lines.\n3. VuWall Video Wall/KVM (VUW) — IS coordination. Non-refundable POC in progress. PO issued March 26, 2026.\n\nCONSTRUCTION DEPENDENCY: TCC Construction PM owns the schedule. IS cannot influence it. All IS projects derive milestone dates from construction. Notice of Award pending. Working assumption: construction September 2026 (avoiding MN State Fair in August). Temporary space: EBC Room 1007 during construction.\n\nOPEN STEERING COMMITTEE ACTIONS:\n- VuWall PO path and timeline to be confirmed\n- VuWall IS resource for POC support to be confirmed\n- Dedicated endpoint resource (Chad and Carri; Gretchen White agreed) — confirm resource or alternative approach\n\nDo not include network specifics, IP addressing, CJIS data, or CUI. Be strategic and concise. Executive audience.",
+        "userPrompt": "Today is @{outputs('Step_01_Get_Current_Date')}. Generate the Monday morning IS portfolio brief.\n\nDATA FROM SHAREPOINT LISTS:\n\nRED RAID ITEMS (immediate attention required):\n@{body('Step_02_Get_RAID_Red_Items')?['value']}\n\nACTIVE MILESTONES (upcoming):\n@{body('Step_03_Get_Active_Milestones')?['value']}\n\nCONSTRUCTION GATES:\n@{body('Step_04_Get_Construction_Gates')?['value']}\n\nACTIONS DUE THIS WEEK:\n@{body('Step_05_Get_Open_Actions_Due_This_Week')?['value']}\n\nStructure your brief EXACTLY as follows:\n\n## IS Portfolio — Monday Brief [@{outputs('Step_01_Get_Current_Date')}]\n\n### 1. IS Milestones Due This Week\n[By project: EXP, NG911, VUW. If none due, state clearly.]\n\n### 2. Construction Gate Status\n[Notice of Award status, NTP status, any dependencies at risk.]\n\n### 3. Key Decisions Pending\n[Decisions that must be made this week or are overdue.]\n\n### 4. Cross-Project Coordination Actions\n[Actions touching more than one project or requiring cross-team coordination.]\n\n### 5. Open SteerCom Action Items\n[VuWall PO path · VuWall IS resource · Dedicated endpoint resource (Gretchen White)]\n\n### Portfolio RAG Summary\n[One line per project: EXP / NG911 / VUW with RAG and one-sentence status.]\n\nKeep the entire brief under 600 words. Flag anything that needs escalation to IS Director."
+      },
+      "runAfter": {
+        "Step_02_Get_RAID_Red_Items": ["Succeeded"],
+        "Step_03_Get_Active_Milestones": ["Succeeded"],
+        "Step_04_Get_Construction_Gates": ["Succeeded"],
+        "Step_05_Get_Open_Actions_Due_This_Week": ["Succeeded"]
+      }
+    },
+
+    "Step_07_Call_Claude_API": {
+      "type": "Http",
+      "inputs": {
+        "method": "POST",
+        "uri": "https://api.anthropic.com/v1/messages",
+        "headers": {
+          "Content-Type": "application/json",
+          "x-api-key": "@{parameters('ClaudeAPIKey')}",
+          "anthropic-version": "2023-06-01"
+        },
+        "body": {
+          "model": "claude-sonnet-4-6",
+          "max_tokens": 1500,
+          "system": "@{outputs('Step_06_Compose_Claude_Prompt')?['systemPrompt']}",
+          "messages": [
+            {
+              "role": "user",
+              "content": "@{outputs('Step_06_Compose_Claude_Prompt')?['userPrompt']}"
+            }
+          ]
+        }
+      },
+      "runAfter": {
+        "Step_06_Compose_Claude_Prompt": ["Succeeded"]
+      }
+    },
+
+    "Step_08_Extract_Brief_Text": {
+      "type": "Compose",
+      "inputs": "@{body('Step_07_Call_Claude_API')?['content']?[0]?['text']}",
+      "runAfter": {
+        "Step_07_Call_Claude_API": ["Succeeded"]
+      }
+    },
+
+    "Step_09_Build_Filename": {
+      "type": "Compose",
+      "inputs": "IS_Monday_Brief_@{outputs('Step_01_Get_Current_Date')}.md",
+      "runAfter": {
+        "Step_08_Extract_Brief_Text": ["Succeeded"]
+      }
+    },
+
+    "Step_10_Save_Brief_to_SharePoint": {
+      "type": "OpenApiConnection",
+      "inputs": {
+        "host": {
+          "connectionName": "shared_sharepointonline",
+          "operationId": "CreateFile",
+          "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+        },
+        "parameters": {
+          "dataset": "https://metcmn.sharepoint.com/sites/TCCISPortfolioHub",
+          "folderPath": "/_Portfolio Hub/Bridge Documents",
+          "name": "@{outputs('Step_09_Build_Filename')}",
+          "body": "@{outputs('Step_08_Extract_Brief_Text')}"
+        }
+      },
+      "runAfter": {
+        "Step_09_Build_Filename": ["Succeeded"]
+      }
+    },
+
+    "Step_11_Post_Teams_Notification": {
+      "type": "OpenApiConnection",
+      "inputs": {
+        "host": {
+          "connectionName": "shared_teams",
+          "operationId": "PostMessageToConversation",
+          "apiId": "/providers/Microsoft.PowerApps/apis/shared_teams"
+        },
+        "parameters": {
+          "poster": "Flow bot",
+          "location": "Channel",
+          "body/recipient/groupId": "@{parameters('TeamsGroupId')}",
+          "body/recipient/channelId": "@{parameters('TeamsChannelId')}",
+          "body/messageBody": "**IS Portfolio Monday Brief — @{outputs('Step_01_Get_Current_Date')}**\n\nYour weekly brief has been generated and saved.\n\n📄 **File:** @{outputs('Step_09_Build_Filename')}\n📁 **Location:** `_Portfolio Hub / Bridge Documents`\n\n---\n\n@{substring(outputs('Step_08_Extract_Brief_Text'), 0, min(1000, length(outputs('Step_08_Extract_Brief_Text'))))}\n\n*[Open full brief in SharePoint]*"
+        }
+      },
+      "runAfter": {
+        "Step_10_Save_Brief_to_SharePoint": ["Succeeded"]
+      }
+    }
+
+  },
+
+  "parameters": {
+    "ClaudeAPIKey": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Anthropic Claude API key. Store in Azure Key Vault or Power Automate encrypted parameter. Do not hardcode."
+      }
+    },
+    "TeamsGroupId": {
+      "type": "string",
+      "metadata": {
+        "description": "Microsoft Teams Group ID for the TCC IS Projects team."
+      }
+    },
+    "TeamsChannelId": {
+      "type": "string",
+      "metadata": {
+        "description": "Channel ID within the Teams group for posting the Monday brief."
+      }
+    }
+  }
+}
