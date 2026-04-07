@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCC IS Portfolio Hub — Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink:       #0d1117;  --ink-2: #3a4150;  --ink-3: #6b7280;
+    --surface:   #ffffff;  --surface-2: #f7f8fa;  --surface-3: #eef0f4;
+    --border:    rgba(0,0,0,0.07);  --border-md: rgba(0,0,0,0.12);
+    --red:#dc2626; --red-bg:#fef2f2; --red-ring:#fca5a5;
+    --amber:#d97706; --amber-bg:#fffbeb; --amber-ring:#fcd34d;
+    --green:#16a34a; --green-bg:#f0fdf4; --green-ring:#86efac;
+    --blue:#2563eb; --blue-bg:#eff6ff;
+    --exp:#2563eb; --ng911:#7c3aed; --vuw:#0d9488;
+    --radius:12px; --radius-sm:8px;
+    --font:'DM Sans',system-ui,sans-serif; --mono:'DM Mono',monospace;
+  }
+  body {
+    font-family: var(--font);
+    background: var(--surface-2);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  /* ═══════════════════════════════ NAV ═══════════════════════════════ */
+  .nav-shell {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border-md);
+    position: sticky; top: 0; z-index: 100;
+    transition: box-shadow 0.2s;
+  }
+  .nav-shell.scrolled { box-shadow: 0 2px 16px rgba(0,0,0,0.08); }
+  .nav-top {
+    display:flex; align-items:center;
+    padding: 0 24px; height: 48px; gap: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-wordmark {
+    display:flex; align-items:center; gap:8px;
+    text-decoration:none; flex-shrink:0; margin-right:24px;
+  }
+  .nav-icon {
+    width:28px; height:28px; background:var(--ink); border-radius:7px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .nav-icon svg { width:14px; height:14px; }
+  .nav-site-name { font-size:13px; font-weight:600; color:var(--ink); letter-spacing:-0.01em; }
+  .nav-site-sub  { font-size:10px; color:var(--ink-3); font-weight:400; margin-left:4px; }
+  .nav-items { display:flex; align-items:stretch; gap:0; flex:1; height:100%; }
+  .nav-item {
+    display:flex; align-items:center; padding: 0 14px;
+    font-size:12px; font-weight:500; color:var(--ink-3);
+    text-decoration:none; border-bottom:2px solid transparent;
+    transition:color 0.12s,border-color 0.12s; cursor:pointer; white-space:nowrap;
+  }
+  .nav-item:hover { color:var(--ink); }
+  .nav-item.active { color:var(--blue); border-bottom-color:var(--blue); }
+  .nav-right { display:flex; align-items:center; gap:10px; margin-left:auto; flex-shrink:0; }
+  .alert-badge {
+    display:flex; align-items:center; gap:5px;
+    background:#fef2f2; border:1px solid #fca5a5; color:var(--red);
+    font-size:10px; font-weight:600; padding:3px 8px; border-radius:20px;
+    cursor:pointer; transition:opacity 0.12s;
+  }
+  .alert-dot {
+    width:6px; height:6px; border-radius:50%; background:var(--red);
+    animation: pulse-r 2s ease-in-out infinite;
+  }
+  @keyframes pulse-r { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.5)} }
+  .nav-date {
+    font-family:var(--mono); font-size:10px; color:var(--ink-3);
+    background:var(--surface-2); padding:3px 8px; border-radius:20px; border:1px solid var(--border-md);
+  }
+  .nav-projects {
+    display:flex; align-items:center; padding:0 24px; height:38px; gap:6px; overflow-x:auto;
+  }
+  .nav-projects::-webkit-scrollbar { display:none; }
+  .proj-chip {
+    display:flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px;
+    font-size:11px; font-weight:500; color:var(--ink-2); border:1px solid var(--border-md);
+    background:var(--surface); cursor:pointer; text-decoration:none; white-space:nowrap;
+    transition:all 0.12s; flex-shrink:0;
+  }
+  .proj-chip:hover { background:var(--surface-2); color:var(--ink); }
+  .proj-chip.exp  { color:var(--exp); }  .proj-chip.ng911 { color:var(--ng911); }
+  .proj-chip.vuw  { color:var(--vuw); }
+  .proj-chip.active.exp  { background:#eff6ff; border-color:var(--exp); font-weight:600; }
+  .proj-chip.active.ng911{ background:#f5f3ff; border-color:var(--ng911); font-weight:600; }
+  .proj-chip.active.vuw  { background:#f0fdfa; border-color:var(--vuw); font-weight:600; }
+  .proj-rag { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+  .proj-chip-id { font-family:var(--mono); font-size:9px; opacity:.6; }
+  .chip-divider { width:1px; height:18px; background:var(--border-md); flex-shrink:0; margin:0 4px; }
+  .section-chip {
+    display:flex; align-items:center; gap:5px; padding:4px 10px; border-radius:20px;
+    font-size:11px; font-weight:400; color:var(--ink-3); cursor:pointer;
+    text-decoration:none; white-space:nowrap; transition:all 0.12s; flex-shrink:0;
+    border:1px solid transparent;
+  }
+  .section-chip:hover,.section-chip.active {
+    color:var(--ink); background:var(--surface-3); border-color:var(--border-md);
+  }
+  .section-chip.active { font-weight:500; }
+  .section-chip svg { width:12px; height:12px; opacity:.6; }
+
+  /* ═══════════════════════════════ PAGE BODY ═══════════════════════════════ */
+  .page-body { padding: 24px; max-width: 1280px; margin: 0 auto; }
+
+  /* section heading */
+  .section-heading {
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom: 14px;
+  }
+  .section-heading h3 {
+    font-size:11px; font-weight:600; letter-spacing:0.07em;
+    text-transform:uppercase; color:var(--ink-3);
+  }
+  .section-heading .as-of {
+    font-family:var(--mono); font-size:10px; color:var(--ink-3);
+    background:var(--surface-3); padding:3px 8px; border-radius:20px; border:1px solid var(--border-md);
+  }
+
+  /* construction gate banner */
+  .gate-banner {
+    background:var(--surface); border:1px solid var(--border-md);
+    border-left:3px solid var(--amber); border-radius:var(--radius-sm);
+    padding:10px 14px; margin-bottom:20px;
+    display:flex; align-items:center; gap:10px; font-size:12px; color:var(--ink-2);
+  }
+  .gate-dot {
+    width:8px; height:8px; border-radius:50%; background:var(--amber); flex-shrink:0;
+    animation: pulse-a 2s ease-in-out infinite;
+  }
+  @keyframes pulse-a { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+  .gate-lbl { font-weight:500; color:var(--amber); margin-right:2px; }
+
+  /* ═══════════════════════════════ STATUS CARDS ═══════════════════════════════ */
+  .cards-grid {
+    display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:20px;
+  }
+  @media(max-width:900px){ .cards-grid{ grid-template-columns:1fr; } }
+
+  .card {
+    background:var(--surface); border-radius:var(--radius); border:1px solid var(--border);
+    padding:20px; position:relative; overflow:hidden;
+    transition:box-shadow 0.15s,transform 0.15s;
+    animation:fadeUp 0.4s ease both;
+  }
+  .card:hover { box-shadow:0 4px 24px rgba(0,0,0,0.07); transform:translateY(-1px); }
+  .card:nth-child(1){animation-delay:.05s} .card:nth-child(2){animation-delay:.10s} .card:nth-child(3){animation-delay:.15s}
+  @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+  .card::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:3px;
+    border-radius:var(--radius) var(--radius) 0 0;
+  }
+  .card.red::before{background:var(--red)} .card.amber::before{background:var(--amber)} .card.green::before{background:var(--green)}
+  .card-head { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:14px; }
+  .project-tag { font-size:9px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); margin-bottom:4px; }
+  .project-name { font-size:15px; font-weight:600; color:var(--ink); line-height:1.2; }
+  .rag-badge {
+    display:flex; align-items:center; gap:5px; padding:4px 10px; border-radius:20px;
+    font-size:11px; font-weight:600; letter-spacing:.03em; flex-shrink:0; margin-left:10px;
+  }
+  .rag-dot { width:6px; height:6px; border-radius:50%; }
+  .rag-badge.red   {background:var(--red-bg);color:var(--red);border:1px solid var(--red-ring);}
+  .rag-badge.amber {background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-ring);}
+  .rag-badge.green {background:var(--green-bg);color:var(--green);border:1px solid var(--green-ring);}
+  .rag-dot.red{background:var(--red)} .rag-dot.amber{background:var(--amber)} .rag-dot.green{background:var(--green)}
+  .card-divider { border:none; border-top:1px solid var(--border); margin:0 0 14px; }
+  .stat-row {
+    display:flex; gap:0; margin-bottom:14px;
+    border:1px solid var(--border); border-radius:var(--radius-sm); overflow:hidden;
+  }
+  .stat { flex:1; padding:10px 0; text-align:center; border-right:1px solid var(--border); }
+  .stat:last-child{border-right:none}
+  .stat-num {
+    font-family:var(--mono); font-size:20px; font-weight:500;
+    line-height:1; display:block; margin-bottom:3px;
+  }
+  .stat-num.red{color:var(--red)} .stat-num.amber{color:var(--amber)} .stat-num.green{color:var(--green)} .stat-num.blue{color:var(--blue)}
+  .stat-label { font-size:9px; font-weight:500; text-transform:uppercase; letter-spacing:.07em; color:var(--ink-3); }
+  .milestone-label { font-size:9px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-3); margin-bottom:6px; }
+  .milestone-row {
+    display:flex; align-items:center; justify-content:space-between;
+    background:var(--surface-2); border:1px solid var(--border); border-radius:var(--radius-sm);
+    padding:8px 12px; gap:8px;
+  }
+  .milestone-name { font-size:12px; font-weight:500; color:var(--ink); line-height:1.3; flex:1; }
+  .milestone-date { font-family:var(--mono); font-size:11px; color:var(--ink-3); white-space:nowrap; flex-shrink:0; }
+  .milestone-date.soon { color:var(--amber); font-weight:500; }
+  .risk-row {
+    margin-top:10px; display:flex; align-items:flex-start; gap:7px;
+    padding:8px 10px; background:var(--red-bg); border:1px solid var(--red-ring); border-radius:var(--radius-sm);
+  }
+  .risk-row.amber-risk { background:var(--amber-bg); border-color:var(--amber-ring); }
+  .risk-icon { font-size:12px; flex-shrink:0; margin-top:1px; }
+  .risk-text { font-size:11px; color:var(--ink-2); line-height:1.4; }
+  .risk-text strong { color:var(--ink); font-weight:600; }
+
+  /* ═══════════════════════════════ METRICS STRIP ═══════════════════════════════ */
+  .metrics-strip {
+    display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:28px;
+  }
+  .metric-tile {
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm);
+    padding:12px 14px; animation:fadeUp 0.4s ease both;
+  }
+  .metric-tile:nth-child(1){animation-delay:.20s} .metric-tile:nth-child(2){animation-delay:.25s}
+  .metric-tile:nth-child(3){animation-delay:.30s} .metric-tile:nth-child(4){animation-delay:.35s}
+  .metric-n {
+    font-family:var(--mono); font-size:26px; font-weight:500;
+    line-height:1; display:block; margin-bottom:4px;
+  }
+  .metric-n.red{color:var(--red)} .metric-n.amber{color:var(--amber)} .metric-n.green{color:var(--green)} .metric-n.blue{color:var(--blue)}
+  .metric-lbl { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:.07em; color:var(--ink-3); }
+
+  /* ═══════════════════════════════ GANTT ═══════════════════════════════ */
+  .chart-wrapper {
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    overflow:hidden; overflow-x:auto; margin-bottom: 28px;
+  }
+  .legend { display:flex; gap:16px; margin-bottom:12px; flex-wrap:wrap; }
+  .legend-item { display:flex; align-items:center; gap:6px; font-size:11px; color:var(--ink-2); }
+  .legend-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+
+  :root { --row-h:36px; --label-w:190px; }
+  .gantt-grid { min-width:calc(var(--label-w) + 580px); position:relative; }
+  .month-header {
+    display:flex; border-bottom:1px solid var(--border);
+    background:var(--surface); position:sticky; top:0; z-index:10;
+  }
+  .month-label-spacer { width:var(--label-w); flex-shrink:0; border-right:1px solid var(--border); }
+  .month-cells { flex:1; display:flex; }
+  .month-cell {
+    flex:1; text-align:center; padding:7px 0; font-size:10px; font-weight:500;
+    text-transform:uppercase; letter-spacing:.06em; color:var(--ink-3);
+    border-right:1px solid var(--border);
+  }
+  .month-cell:last-child{border-right:none}
+  .month-cell.current { color:var(--blue); background:var(--blue-bg); font-weight:600; }
+  .section-row {
+    display:flex; align-items:center; background:var(--surface-2);
+    border-bottom:1px solid var(--border); padding:6px 14px; gap:8px;
+  }
+  .section-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .section-name { font-size:11px; font-weight:600; letter-spacing:.04em; }
+  .section-role { font-size:10px; color:var(--ink-3); margin-left:2px; }
+  .task-row {
+    display:flex; height:var(--row-h); border-bottom:1px solid var(--border);
+    align-items:center; transition:background 0.1s;
+  }
+  .task-row:hover{background:var(--surface-2)} .task-row:last-child{border-bottom:none}
+  .task-label {
+    width:var(--label-w); flex-shrink:0; padding:0 12px;
+    border-right:1px solid var(--border); display:flex;
+    flex-direction:column; justify-content:center; gap:2px; height:100%;
+  }
+  .task-name { font-size:11px; font-weight:500; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .task-id { font-family:var(--mono); font-size:9px; color:var(--ink-3); }
+  .task-chart { flex:1; height:100%; position:relative; }
+  .month-line { position:absolute; top:0; bottom:0; width:1px; background:var(--border); }
+  .today-line { position:absolute; top:0; bottom:0; width:1.5px; background:var(--blue); opacity:.5; z-index:5; }
+  .milestone-diamond {
+    position:absolute; width:10px; height:10px;
+    transform:rotate(45deg) translateY(-50%); top:50%; margin-top:-3px;
+    border-radius:2px; z-index:4; cursor:default; transition:transform 0.15s;
+  }
+  .milestone-diamond:hover { transform:rotate(45deg) translateY(-50%) scale(1.5); }
+  .m-complete{background:var(--green)} .m-active{background:var(--amber)}
+  .m-at-risk{background:var(--red)} .m-future{background:var(--ink-3)} .m-gate{background:#7c3aed}
+  .gate-overlay {
+    position:absolute; top:0; bottom:0;
+    background:rgba(124,58,237,0.04); border-left:1.5px dashed rgba(124,58,237,0.3);
+    pointer-events:none; z-index:2;
+  }
+  .tooltip {
+    display:none; position:fixed; background:var(--ink); color:white;
+    font-size:11px; font-family:var(--font); padding:8px 12px; border-radius:8px;
+    max-width:260px; z-index:200; line-height:1.5; pointer-events:none;
+    box-shadow:0 4px 16px rgba(0,0,0,0.2);
+  }
+  .tooltip.visible{display:block}
+  .tooltip-title{font-weight:600;margin-bottom:3px}
+  .tooltip-date{color:rgba(255,255,255,.6);font-family:var(--mono);font-size:10px}
+  .tooltip-status{margin-top:4px}
+  .tooltip-status.red{color:#fca5a5} .tooltip-status.amber{color:#fcd34d} .tooltip-status.green{color:#86efac}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav class="nav-shell" id="navShell">
+  <div class="nav-top">
+    <a class="nav-wordmark" href="#">
+      <div class="nav-icon">
+        <svg viewBox="0 0 14 14" fill="none">
+          <rect x="1" y="1" width="5" height="5" rx="1.5" fill="white"/>
+          <rect x="8" y="1" width="5" height="5" rx="1.5" fill="white" opacity=".6"/>
+          <rect x="1" y="8" width="5" height="5" rx="1.5" fill="white" opacity=".6"/>
+          <rect x="8" y="8" width="5" height="5" rx="1.5" fill="white" opacity=".3"/>
+        </svg>
+      </div>
+      <span class="nav-site-name">IS Portfolio Hub <span class="nav-site-sub">Metro Transit · TCC</span></span>
+    </a>
+    <nav class="nav-items">
+      <a class="nav-item active" href="#">Status</a>
+      <a class="nav-item" href="#">Timeline</a>
+      <a class="nav-item" href="#">RAID Log</a>
+      <a class="nav-item" href="#">WBS</a>
+      <a class="nav-item" href="#">Monday Brief</a>
+      <a class="nav-item" href="#">Documents</a>
+    </nav>
+    <div class="nav-right">
+      <div class="alert-badge"><div class="alert-dot"></div>9 Red</div>
+      <div class="nav-date">2026-03-26</div>
+    </div>
+  </div>
+  <div class="nav-projects">
+    <a class="proj-chip exp active" href="#"><div class="proj-rag" style="background:#d97706"></div>TCC Expansion<span class="proj-chip-id">EXP</span></a>
+    <a class="proj-chip ng911" href="#"><div class="proj-rag" style="background:#d97706"></div>NG911 Refresh<span class="proj-chip-id">NG911</span></a>
+    <a class="proj-chip vuw" href="#"><div class="proj-rag" style="background:#dc2626"></div>VuWall / KVM<span class="proj-chip-id">VUW</span></a>
+    <div class="chip-divider"></div>
+    <a class="section-chip active" href="#">
+      <svg viewBox="0 0 12 12" fill="currentColor"><rect x="1" y="1" width="4" height="4" rx="1"/><rect x="7" y="1" width="4" height="4" rx="1"/><rect x="1" y="7" width="4" height="4" rx="1"/><rect x="7" y="7" width="4" height="4" rx="1"/></svg>
+      Overview
+    </a>
+    <a class="section-chip" href="#">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="4"/><line x1="6" y1="3" x2="6" y2="6"/><line x1="6" y1="6" x2="8.5" y2="6"/></svg>
+      Milestones
+    </a>
+    <a class="section-chip" href="#">
+      <svg viewBox="0 0 12 12" fill="currentColor"><path d="M6 1L11 10H1L6 1Z" opacity=".15"/><path d="M6 1L11 10H1L6 1Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><line x1="6" y1="4.5" x2="6" y2="7" stroke="currentColor" stroke-width="1.5"/><circle cx="6" cy="8.5" r=".6" fill="currentColor"/></svg>
+      Risks
+    </a>
+    <a class="section-chip" href="#">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="2,6 5,9 10,3"/></svg>
+      Actions
+    </a>
+    <a class="section-chip" href="#">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6 Q6 2 10 6 Q6 10 2 6Z"/><circle cx="6" cy="6" r="1.5" fill="currentColor" stroke="none"/></svg>
+      Decisions
+    </a>
+  </div>
+</nav>
+
+<!-- ═══ PAGE BODY ═══ -->
+<div class="page-body">
+
+  <!-- Status section -->
+  <div class="section-heading">
+    <h3>Portfolio Status</h3>
+    <span class="as-of">As of 2026-03-26</span>
+  </div>
+
+  <div class="gate-banner">
+    <div class="gate-dot"></div>
+    <span><span class="gate-lbl">Construction Gate:</span> Notice of Award pending &nbsp;·&nbsp; Working assumption: construction Sep 2026 &nbsp;·&nbsp; All IS milestone dates derive from construction schedule &nbsp;·&nbsp; Temporary space: EBC Room 1007</span>
+  </div>
+
+  <div class="cards-grid">
+    <div class="card amber">
+      <div class="card-head">
+        <div><div class="project-tag">EXP &nbsp;·&nbsp; IS Lead</div><div class="project-name">TCC Expansion</div></div>
+        <div class="rag-badge amber"><div class="rag-dot amber"></div>Amber</div>
+      </div>
+      <hr class="card-divider">
+      <div class="stat-row">
+        <div class="stat"><span class="stat-num amber">18</span><span class="stat-label">RAID Items</span></div>
+        <div class="stat"><span class="stat-num red">4</span><span class="stat-label">Red</span></div>
+        <div class="stat"><span class="stat-num blue">60</span><span class="stat-label">IS PCs</span></div>
+      </div>
+      <div class="milestone-label">Next Milestone</div>
+      <div class="milestone-row">
+        <span class="milestone-name">EBC Operational (14 positions, Room 1007)</span>
+        <span class="milestone-date soon">Apr 30</span>
+      </div>
+      <div class="risk-row">
+        <span class="risk-icon">⚠</span>
+        <span class="risk-text"><strong>Special-build PC lead time</strong> makes Apr 30 aspirational. Formal review Apr 22 SteerCo.</span>
+      </div>
+    </div>
+
+    <div class="card amber">
+      <div class="card-head">
+        <div><div class="project-tag">NG911 &nbsp;·&nbsp; IS Coordination</div><div class="project-name">Solacom NG911 Refresh</div></div>
+        <div class="rag-badge amber"><div class="rag-dot amber"></div>Amber</div>
+      </div>
+      <hr class="card-divider">
+      <div class="stat-row">
+        <div class="stat"><span class="stat-num amber">4</span><span class="stat-label">RAID Items</span></div>
+        <div class="stat"><span class="stat-num amber">1</span><span class="stat-label">Red</span></div>
+        <div class="stat"><span class="stat-num green">4</span><span class="stat-label">Mitel Lines</span></div>
+      </div>
+      <div class="milestone-label">Next Milestone</div>
+      <div class="milestone-row">
+        <span class="milestone-name">Deep-dive RFP workshop &nbsp;·&nbsp; Mitel SHALL statement</span>
+        <span class="milestone-date">TBD / FE-led</span>
+      </div>
+      <div class="risk-row amber-risk">
+        <span class="risk-icon">◈</span>
+        <span class="risk-text"><strong>Mitel disentanglement</strong> must survive contract finalization. Josh Alswager IS rep.</span>
+      </div>
+    </div>
+
+    <div class="card red">
+      <div class="card-head">
+        <div><div class="project-tag">VUW &nbsp;·&nbsp; IS Coordination</div><div class="project-name">VuWall Video Wall / KVM</div></div>
+        <div class="rag-badge red"><div class="rag-dot red"></div>Red</div>
+      </div>
+      <hr class="card-divider">
+      <div class="stat-row">
+        <div class="stat"><span class="stat-num red">8</span><span class="stat-label">RAID Items</span></div>
+        <div class="stat"><span class="stat-num red">3</span><span class="stat-label">Red</span></div>
+        <div class="stat"><span class="stat-num amber">2</span><span class="stat-label">Open Actions</span></div>
+      </div>
+      <div class="milestone-label">Next Milestone</div>
+      <div class="milestone-row">
+        <span class="milestone-name">BCA design docs submitted (CJIS approval Jun/Jul)</span>
+        <span class="milestone-date soon">May 15</span>
+      </div>
+      <div class="risk-row">
+        <span class="risk-icon">⚠</span>
+        <span class="risk-text"><strong>Non-refundable POC cost.</strong> PO issued Mar 26. IS support gap unresolved. SteerCo actions open.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="metrics-strip">
+    <div class="metric-tile"><span class="metric-n blue">33</span><span class="metric-lbl">Total RAID Items</span></div>
+    <div class="metric-tile"><span class="metric-n red">9</span><span class="metric-lbl">Red — Immediate</span></div>
+    <div class="metric-tile"><span class="metric-n amber">23</span><span class="metric-lbl">Amber — Monitor</span></div>
+    <div class="metric-tile"><span class="metric-n amber">3</span><span class="metric-lbl">SteerCom Actions Open</span></div>
+  </div>
+
+  <!-- Timeline section -->
+  <div class="section-heading">
+    <h3>Milestone Timeline — 2026</h3>
+    <span class="as-of">Construction-dependent</span>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Complete</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--amber)"></div>Active</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div>At-risk</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--ink-3)"></div>Future</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#7c3aed"></div>Construction Gate</div>
+    <div class="legend-item" style="margin-left:6px">
+      <div style="width:18px;height:1.5px;background:var(--blue);opacity:.6;border-radius:1px"></div>Today
+    </div>
+  </div>
+
+  <div class="chart-wrapper">
+    <div class="gantt-grid" id="ganttGrid"></div>
+  </div>
+
+</div>
+
+<div class="tooltip" id="tooltip">
+  <div class="tooltip-title" id="tt-title"></div>
+  <div class="tooltip-date"  id="tt-date"></div>
+  <div class="tooltip-status" id="tt-status"></div>
+</div>
+
+<script>
+// nav interactions
+document.querySelectorAll('.nav-item').forEach(el=>{
+  el.addEventListener('click',e=>{e.preventDefault();document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));el.classList.add('active');});
+});
+document.querySelectorAll('.proj-chip').forEach(el=>{
+  el.addEventListener('click',e=>{e.preventDefault();const was=el.classList.contains('active');document.querySelectorAll('.proj-chip').forEach(c=>c.classList.remove('active'));if(!was)el.classList.add('active');});
+});
+document.querySelectorAll('.section-chip').forEach(el=>{
+  el.addEventListener('click',e=>{e.preventDefault();document.querySelectorAll('.section-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');});
+});
+window.addEventListener('scroll',()=>{
+  document.getElementById('navShell').classList.toggle('scrolled',window.scrollY>0);
+});
+
+// ── Gantt ──
+const MONTHS=[{label:'Jan',mo:0},{label:'Feb',mo:1},{label:'Mar',mo:2},{label:'Apr',mo:3},{label:'May',mo:4},{label:'Jun',mo:5},{label:'Jul',mo:6},{label:'Aug',mo:7},{label:'Sep',mo:8},{label:'Oct',mo:9},{label:'Nov',mo:10},{label:'Dec',mo:11}];
+const TODAY=new Date(2026,2,26),START=new Date(2026,0,1),END=new Date(2026,11,31);
+function datePct(s){const d=new Date(s);return Math.max(0,Math.min(1,(d-START)/(END-START+86400000)));}
+function monthPct(mo){return(new Date(2026,mo,1)-START)/(END-START+86400000);}
+const todayPct=(TODAY-START)/(END-START+86400000);
+function sCls(m){if(m.status==='complete')return 'm-complete';if(m.status==='gate')return 'm-gate';if(m.rag==='at-risk'||m.rag==='red')return 'm-at-risk';if(m.status==='active')return 'm-active';return 'm-future';}
+
+const PROJECTS=[
+  {id:'EXP',name:'TCC Expansion',role:'IS Lead',color:'#2563eb',milestones:[
+    {id:'M-01',name:'PC Procurement GO/NO-GO',date:'2026-01-31',status:'complete',rag:'green',notes:'Steering Committee decision. Gates 8-12 week PC lead time.'},
+    {id:'M-02',name:'CJIS Scope Confirmed',date:'2026-02-07',status:'complete',rag:'green',notes:'Capacity Expansion vs New Facility ruling.'},
+    {id:'M-03',name:'Room 1007 Clean-Room Ready',date:'2026-03-09',status:'complete',rag:'green',notes:'Dust-free, HVAC 24/7, powered, secured. Gates installation.'},
+    {id:'M-04',name:'7 PCs Delivered & Staged',date:'2026-03-24',status:'complete',rag:'amber',notes:'Confirm actual completion. Critical path to M-05.'},
+    {id:'M-05',name:'EBC Operational',date:'2026-04-30',status:'active',rag:'amber',notes:'14 positions live in Room 1007. Special-build PC lead time is critical path.'},
+    {id:'M-06',name:'911 Funding Decision',date:'2026-06-30',status:'future',rag:'future',notes:'Scenario A or B. TCC Executive decision.'},
+    {id:'M-07',name:'CJIS Audit Complete',date:'2026-07-31',status:'future',rag:'future',notes:'Timeline depends on CJIS scope ruling.'},
+    {id:'M-08',name:'Construction NTP',date:'2026-09-01',status:'gate',rag:'gate',notes:'IS cannot influence. All IS milestones downstream.'},
+    {id:'M-09',name:'IS Build Begins',date:'2026-09-15',status:'future',rag:'future',notes:'Full 60-PC refresh at construction site.'},
+    {id:'M-10',name:'TCC Go-Live',date:'2026-12-15',status:'future',rag:'future',notes:'All 30 consoles. Pending NTP confirmation.'},
+  ]},
+  {id:'NG911',name:'NG911 Refresh',role:'IS Coordination',color:'#7c3aed',milestones:[
+    {id:'N-01',name:'RFP Workshop',date:'2026-05-01',status:'future',rag:'amber',notes:'FE-led. IS inserts Mitel disentanglement SHALL statement.'},
+    {id:'N-02',name:'RFP Issued',date:'2026-06-15',status:'future',rag:'future',notes:'FE leads. IS monitors Mitel requirement language.'},
+    {id:'N-03',name:'Vendor Selected',date:'2026-09-30',status:'future',rag:'future',notes:'New vendor must own 100% end-to-end support.'},
+    {id:'N-04',name:'Contract Finalized',date:'2026-12-31',status:'future',rag:'future',notes:'Mitel disentanglement must survive negotiations.'},
+  ]},
+  {id:'VUW',name:'VuWall / KVM',role:'IS Coordination',color:'#0d9488',milestones:[
+    {id:'V-01',name:'PO Issued',date:'2026-03-26',status:'complete',rag:'green',notes:'Non-refundable POC equipment committed.'},
+    {id:'V-02',name:'BCA Design Docs',date:'2026-05-15',status:'active',rag:'amber',notes:'Paul Burke infrastructure engagement required. CJIS prerequisite.'},
+    {id:'V-03',name:'BCA CJIS Approval',date:'2026-06-30',status:'future',rag:'at-risk',notes:'Jun/Jul target. Original May rejected. At risk if docs delayed.'},
+    {id:'V-04',name:'POC Go/No-Go',date:'2026-06-30',status:'future',rag:'future',notes:'Based on documented success criteria only.'},
+    {id:'V-05',name:'Support Partner Selected',date:'2026-08-31',status:'future',rag:'at-risk',notes:'Bluum contract expiry risk. 3 parallel paths.'},
+    {id:'V-06',name:'VuWall Deployment',date:'2026-11-30',status:'future',rag:'future',notes:'Pending POC success, CJIS approval, construction.'},
+  ]},
+];
+
+const grid=document.getElementById('ganttGrid');
+
+// month header
+const mhRow=document.createElement('div');mhRow.className='month-header';
+const spacer=document.createElement('div');spacer.className='month-label-spacer';mhRow.appendChild(spacer);
+const mcells=document.createElement('div');mcells.className='month-cells';
+MONTHS.forEach(m=>{const mc=document.createElement('div');mc.className='month-cell'+(m.mo===2?' current':'');mc.textContent=m.label;mcells.appendChild(mc);});
+mhRow.appendChild(mcells);grid.appendChild(mhRow);
+
+PROJECTS.forEach(proj=>{
+  const sec=document.createElement('div');sec.className='section-row';
+  sec.innerHTML=`<div class="section-dot" style="background:${proj.color}"></div><span class="section-name" style="color:${proj.color}">${proj.name}</span><span class="section-role">${proj.role}</span>`;
+  grid.appendChild(sec);
+
+  proj.milestones.forEach(m=>{
+    const row=document.createElement('div');row.className='task-row';
+    const lbl=document.createElement('div');lbl.className='task-label';
+    lbl.innerHTML=`<span class="task-name">${m.name}</span><span class="task-id">${m.id}</span>`;
+    row.appendChild(lbl);
+    const chart=document.createElement('div');chart.className='task-chart';
+
+    MONTHS.forEach((mo,idx)=>{if(!idx)return;const l=document.createElement('div');l.className='month-line';l.style.left=monthPct(mo.mo)*100+'%';chart.appendChild(l);});
+
+    const tl=document.createElement('div');tl.className='today-line';tl.style.left=todayPct*100+'%';chart.appendChild(tl);
+
+    const go=document.createElement('div');go.className='gate-overlay';go.style.left=monthPct(8)*100+'%';go.style.right='0';chart.appendChild(go);
+
+    const pct=datePct(m.date);
+    const d=document.createElement('div');
+    d.className='milestone-diamond '+sCls(m);
+    d.style.left=`calc(${pct*100}% - 5px)`;
+    d.addEventListener('mouseenter',e=>{
+      const tt=document.getElementById('tooltip');
+      document.getElementById('tt-title').textContent=m.name;
+      document.getElementById('tt-date').textContent=m.id+'  ·  '+m.date;
+      const se=document.getElementById('tt-status');se.textContent=m.notes;
+      se.className='tooltip-status '+(m.rag==='at-risk'?'red':m.rag==='future'?'':m.rag);
+      tt.classList.add('visible');
+    });
+    d.addEventListener('mousemove',e=>{const tt=document.getElementById('tooltip');tt.style.left=(e.clientX+14)+'px';tt.style.top=(e.clientY-10)+'px';});
+    d.addEventListener('mouseleave',()=>document.getElementById('tooltip').classList.remove('visible'));
+    chart.appendChild(d);
+    row.appendChild(chart);grid.appendChild(row);
+  });
+});
+</script>
+</body>
+</html>
