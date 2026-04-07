@@ -1,0 +1,96 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/sp/v2/tile-formatting.schema.json",
+  "height": "170",
+  "width": "300",
+  "hideSelection": false,
+  "formatter": {
+    "elmType": "div",
+    "style": {
+      "width": "95%", "height": "92%",
+      "box-shadow": "0 2px 10px rgba(0,84,164,0.12)",
+      "overflow": "hidden", "border-radius": "10px",
+      "display": "flex", "flex-direction": "row",
+      "align-items": "stretch", "font-family": "Segoe UI, sans-serif",
+      "border": "1px solid #e0eaf7"
+    },
+    "children": [
+      {
+        "elmType": "div",
+        "style": {
+          "width": "7px", "flex-shrink": "0",
+          "background-color": "=if([$Overall_x0020_RAG]=='Red','#cc2222',if([$Overall_x0020_RAG]=='Amber','#c97000','#157a3c'))"
+        }
+      },
+      {
+        "elmType": "div",
+        "style": {
+          "display": "flex", "flex-direction": "column",
+          "padding": "14px 16px", "flex": "1", "gap": "6px",
+          "background-color": "#ffffff"
+        },
+        "children": [
+          {
+            "elmType": "div",
+            "style": { "display": "flex", "align-items": "center", "gap": "8px" },
+            "children": [
+              {
+                "elmType": "svg",
+                "style": { "width": "10px", "height": "10px", "flex-shrink": "0" },
+                "attributes": { "viewBox": "0 0 10 10" },
+                "children": [{
+                  "elmType": "circle",
+                  "attributes": {
+                    "cx": "5", "cy": "5", "r": "4",
+                    "fill": "=if([$Overall_x0020_RAG]=='Red','#cc2222',if([$Overall_x0020_RAG]=='Amber','#c97000','#157a3c'))"
+                  }
+                }]
+              },
+              {
+                "elmType": "span",
+                "style": { "font-size": "14px", "font-weight": "700", "color": "#002a55" },
+                "txtContent": "[$Project]"
+              }
+            ]
+          },
+          {
+            "elmType": "span",
+            "style": {
+              "font-size": "11px", "color": "#444444", "line-height": "1.5",
+              "overflow": "hidden", "white-space": "nowrap", "text-overflow": "ellipsis"
+            },
+            "txtContent": "[$Status_x0020_Narrative]"
+          },
+          {
+            "elmType": "span",
+            "style": { "font-size": "10px", "color": "#767676" },
+            "txtContent": "='Next: ' + [$Next_x0020_Milestone]"
+          },
+          {
+            "elmType": "div",
+            "style": {
+              "display": "flex", "justify-content": "space-between",
+              "align-items": "center", "margin-top": "auto"
+            },
+            "children": [
+              {
+                "elmType": "span",
+                "style": { "font-size": "10px", "color": "#767676" },
+                "txtContent": "='Open RAID: ' + toString([$Open_x0020_RAID_x0020_Count])"
+              },
+              {
+                "elmType": "span",
+                "style": {
+                  "font-size": "10px", "font-weight": "700",
+                  "padding": "2px 10px", "border-radius": "20px",
+                  "background-color": "=if([$Overall_x0020_RAG]=='Red','#fde8e8',if([$Overall_x0020_RAG]=='Amber','#fff8e1','#f0faf4'))",
+                  "color": "=if([$Overall_x0020_RAG]=='Red','#b91c1c',if([$Overall_x0020_RAG]=='Amber','#92400e','#166534'))"
+                },
+                "txtContent": "[$Overall_x0020_RAG]"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
