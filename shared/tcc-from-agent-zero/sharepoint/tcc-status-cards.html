@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #07090f;
+    color: #e2e8f0;
+    padding: 16px;
+  }
+  .header {
+    font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+    color: #4e6280; margin-bottom: 14px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .refresh { font-family: 'Courier New', monospace; font-size: 10px; color: #4e6280; }
+  .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  @media (max-width: 600px) { .cards { grid-template-columns: 1fr 1fr; } }
+  .card {
+    background: #0f1623; border: 1px solid #1a2840;
+    border-radius: 8px; padding: 14px 16px;
+    border-top: 3px solid #1a2840;
+    transition: border-color .2s;
+  }
+  .card.green { border-top-color: #10b981; }
+  .card.amber { border-top-color: #f59e0b; }
+  .card.red { border-top-color: #ef4444; }
+  .card.loading { border-top-color: #4e6280; }
+  .card-code { font-family: 'Courier New', monospace; font-size: 10px; color: #4e6280; margin-bottom: 3px; }
+  .card-name { font-size: 12px; font-weight: 600; color: #e2e8f0; margin-bottom: 10px; }
+  .rag-pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 10px; font-weight: 700; padding: 3px 8px;
+    border-radius: 10px; margin-bottom: 8px;
+  }
+  .rag-pill .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .rag-pill.green { background: rgba(16,185,129,.12); color: #10b981; }
+  .rag-pill.green .dot { background: #10b981; }
+  .rag-pill.amber { background: rgba(245,158,11,.12); color: #f59e0b; }
+  .rag-pill.amber .dot { background: #f59e0b; }
+  .rag-pill.red { background: rgba(239,68,68,.12); color: #ef4444; }
+  .rag-pill.red .dot { background: #ef4444; }
+  .rag-pill.loading { background: rgba(78,98,128,.12); color: #4e6280; }
+  .card-narrative { font-size: 11px; color: #4e6280; line-height: 1.5; min-height: 32px; }
+  .card-milestone { font-size: 10px; color: #4e6280; margin-top: 8px; padding-top: 8px; border-top: 1px solid #1a2840; }
+  .card-milestone strong { color: #e2e8f0; font-weight: 500; }
+  .gate-banner {
+    margin-top: 12px; padding: 9px 14px;
+    background: rgba(245,158,11,.06); border: 1px solid rgba(245,158,11,.18);
+    border-radius: 6px; display: flex; align-items: center; gap: 10px;
+  }
+  .gate-dot { width: 7px; height: 7px; border-radius: 50%; background: #f59e0b; flex-shrink: 0; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.8)} }
+  .gate-text { font-size: 11px; color: #fcd34d; }
+  .gate-rule { margin-left: auto; font-size: 10px; font-family:'Courier New',monospace; color:#4e6280; background:#161f30; padding:2px 7px; border-radius:3px; white-space:nowrap; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span>IS PROJECT STATUS SUMMARY</span>
+  <span class="refresh" id="ts">e28094</span>
+</div>
+
+<div class="cards" id="cards">
+  <div class="card loading"><div class="card-code">EXP</div><div class="card-name">TCC Expansion</div><div class="rag-pill loading"><span class="dot"></span>Loadinge280a6</div><div class="card-narrative"></div></div>
+  <div class="card loading"><div class="card-code">NG911</div><div class="card-name">Solacom NG911</div><div class="rag-pill loading"><span class="dot"></span>Loadinge280a6</div><div class="card-narrative"></div></div>
+  <div class="card loading"><div class="card-code">VUW</div><div class="card-name">VuWall / KVM</div><div class="rag-pill loading"><span class="dot"></span>Loadinge280a6</div><div class="card-narrative"></div></div>
+  <div class="card loading"><div class="card-code">CONST</div><div class="card-name">Construction Gate</div><div class="rag-pill loading"><span class="dot"></span>Loadinge280a6</div><div class="card-narrative"></div></div>
+</div>
+
+<div class="gate-banner">
+  <div class="gate-dot"></div>
+  <div class="gate-text"><strong>Construction Gate Active</strong> e28094 Notice to Award pending. IS milestones derive from construction schedule. Working assumption: Sept 2026.</div>
+  <div class="gate-rule">1:1 Slip Rule</div>
+</div>
+
+<script>
+document.getElementById('ts').textContent = 'As of ' + new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+
+var SITE = 'https://metcmn.sharepoint.com/sites/TCCISPortfolioHub';
+
+function ragClass(r) {
+  if (!r) return 'loading';
+  r = r.toLowerCase();
+  if (r === 'green') return 'green';
+  if (r === 'amber' || r === 'yellow') return 'amber';
+  if (r === 'red') return 'red';
+  return 'loading';
+}
+
+var PROJECTS = [
+  { code:'EXP', name:'TCC Expansion' },
+  { code:'NG911', name:'Solacom NG911' },
+  { code:'VUW', name:'VuWall / KVM' },
+  { code:'CONST', name:'Construction Gate' }
+];
+
+function buildCards(items) {
+  var container = document.getElementById('cards');
+  container.innerHTML = '';
+  PROJECTS.forEach(function(p) {
+    var row = items.find(function(i){ return i.Project === p.code; }) || {};
+    var rag = ragClass(row.Overall_x0020_RAG || row.OverallRAG || row.RAG || '');
+    var label = (row.Overall_x0020_RAG || row.OverallRAG || row.RAG || '\xe2\x80\x94').toUpperCase();
+    var narrative = row.Status_x0020_Narrative || row.StatusNarrative || '\xe2\x80\x94';
+    var milestone = row.Next_x0020_Milestone || row.NextMilestone || '';
+    var card = document.createElement('div');
+    card.className = 'card ' + rag;
+    card.innerHTML =
+      '<div class="card-code">' + p.code + '</div>' +
+      '<div class="card-name">' + p.name + '</div>' +
+      '<div class="rag-pill ' + rag + '"><span class="dot"></span>' + label + '</div>' +
+      '<div class="card-narrative">' + narrative + '</div>' +
+      (milestone ? '<div class="card-milestone">Next: <strong>' + milestone + '</strong></div>' : '');
+    container.appendChild(card);
+  });
+}
+
+fetch(SITE + "/_api/web/lists/getbytitle('IS%20Status%20Summary')/items?$select=Project,Overall_x0020_RAG,OverallRAG,RAG,Status_x0020_Narrative,StatusNarrative,Next_x0020_Milestone,NextMilestone&$orderby=Modified%20desc&$top=20", {
+  headers: { 'Accept': 'application/json;odata=nometadata' }
+})
+.then(function(r){ return r.ok ? r.json() : null; })
+.then(function(d){ if (d && d.value) buildCards(d.value); })
+.catch(function(){});
+</script>
+</body>
+</html>
