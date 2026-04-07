@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCC IS Portfolio Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --mc:#0054A4;--mc-dark:#002A55;--mc-mid:#1A6BBF;--mc-light:#D6E8F7;--mc-pale:#EBF4FB;
+  --ink:#0d1117;--ink-2:#2d3748;--ink-3:#64748b;
+  --surface:#fff;--surface-2:#f4f7fb;--border:rgba(0,84,164,.1);--border-md:rgba(0,84,164,.18);
+  --red:#cc2222;--amber:#c97000;--amber-bg:#fff8ec;--amber-ring:#f5c97a;
+  --green:#157a3c;--green-bg:#edfbf3;
+  --font:'DM Sans',system-ui,sans-serif;--mono:'DM Mono',monospace;
+  --radius:12px;--radius-sm:8px;
+}
+body{font-family:var(--font);background:var(--surface-2);color:var(--ink);-webkit-font-smoothing:antialiased}
+.page{max-width:1200px;margin:0 auto;padding:28px 24px 60px}
+
+/* ── HERO ── */
+.hero{background:var(--mc-dark);border-radius:var(--radius);padding:32px 36px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40px;right:-40px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.04);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-60px;right:80px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.03);pointer-events:none}
+.hero-top{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.hero-logo{display:flex;align-items:center;gap:10px}
+.hero-wordmark{font-size:13px;font-weight:600;color:rgba(255,255,255,.9);letter-spacing:-.01em}
+.hero-wordmark span{color:rgba(255,255,255,.5);font-weight:400;font-size:11px;display:block;margin-top:1px}
+.hero-h{font-size:28px;font-weight:600;color:#fff;letter-spacing:-.02em;margin-bottom:6px}
+.hero-sub{font-size:13px;color:rgba(255,255,255,.6);line-height:1.5;max-width:680px}
+.hero-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:20px;font-size:11px;font-weight:500;border:1px solid}
+.pill.green{background:rgba(21,122,60,.15);color:#5dba82;border-color:rgba(93,186,130,.3)}
+.pill.amber{background:rgba(201,112,0,.15);color:#f5a623;border-color:rgba(245,166,35,.3)}
+.pill.blue{background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.15)}
+.pill-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+
+/* ── CONSTRUCTION GATE BANNER ── */
+.gate{background:var(--surface);border:1px solid var(--border-md);border-left:3px solid var(--amber);border-radius:var(--radius-sm);padding:10px 16px;margin-bottom:20px;display:flex;align-items:flex-start;gap:10px;font-size:11px;color:var(--ink-2);line-height:1.6}
+.gate-dot{width:7px;height:7px;border-radius:50%;background:var(--amber);flex-shrink:0;margin-top:3px;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+.gate strong{color:var(--amber);font-weight:600}
+
+/* ── PROJECT CARDS ── */
+.section-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin-bottom:12px}
+.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px}
+@media(max-width:900px){.proj-grid{grid-template-columns:1fr}}
+.proj-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:box-shadow .15s,transform .15s;text-decoration:none;color:inherit;display:block}
+.proj-card:hover{box-shadow:0 4px 20px rgba(0,84,164,.1);transform:translateY(-2px)}
+.proj-card-top{padding:16px 18px 14px;position:relative}
+.proj-card-top::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.exp::before{background:var(--mc)}.ng911::before{background:#7c3aed}.vuw::before{background:#0d9488}
+.proj-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+.exp .proj-tag{color:var(--mc)}.ng911 .proj-tag{color:#7c3aed}.vuw .proj-tag{color:#0d9488}
+.proj-name{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:4px}
+.proj-role{font-size:11px;color:var(--ink-3)}
+.rag{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;position:absolute;top:14px;right:14px}
+.rag-dot{width:5px;height:5px;border-radius:50%}
+.rag.green{background:var(--green-bg);color:var(--green);border:1px solid #7dd4a2}.rag-dot.green{background:var(--green)}
+.rag.amber{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-ring)}.rag-dot.amber{background:var(--amber)}
+.rag.red{background:#fef2f2;color:var(--red);border:1px solid #fca5a5}.rag-dot.red{background:var(--red)}
+.proj-card-body{padding:0 18px 14px;display:flex;flex-direction:column;gap:6px}
+.proj-stat-row{display:flex;gap:8px}
+.proj-stat{flex:1;background:var(--surface-2);border:1px solid var(--border);border-radius:6px;padding:7px 10px;text-align:center}
+.proj-stat-n{font-family:var(--mono);font-size:16px;font-weight:500;display:block;margin-bottom:1px}
+.proj-stat-l{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3)}
+.proj-next{background:var(--mc-pale);border:1px solid var(--mc-light);border-radius:6px;padding:8px 10px;display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.proj-next-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--mc);margin-bottom:2px}
+.proj-next-name{font-size:11px;font-weight:500;color:var(--ink);line-height:1.3}
+.proj-next-date{font-family:var(--mono);font-size:10px;color:var(--ink-3);white-space:nowrap;flex-shrink:0;margin-top:2px}
+.proj-next-date.soon{color:var(--amber);font-weight:600}
+.proj-card-footer{border-top:1px solid var(--border);padding:9px 18px;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--mc);font-weight:500}
+.proj-card-footer span{color:var(--ink-3);font-weight:400}
+
+/* ── BOTTOM GRID ── */
+.bottom-grid{display:grid;grid-template-columns:2fr 1fr;gap:14px}
+@media(max-width:900px){.bottom-grid{grid-template-columns:1fr}}
+
+/* ── QUICK LINKS ── */
+.links-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+.links-card h3{font-size:12px;font-weight:700;color:var(--mc-dark);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.link-group{margin-bottom:14px}
+.link-group-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-3);margin-bottom:7px}
+.link-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:6px;text-decoration:none;color:var(--ink-2);font-size:12px;font-weight:500;transition:background .12s;border:1px solid transparent}
+.link-item:hover{background:var(--mc-pale);border-color:var(--mc-light);color:var(--mc)}
+.link-icon{font-size:13px;flex-shrink:0;width:20px;text-align:center}
+.link-badge{font-size:9px;font-weight:700;padding:1px 6px;border-radius:8px;margin-left:auto}
+.link-badge.red{background:#fef2f2;color:var(--red)}
+.link-badge.amber{background:var(--amber-bg);color:var(--amber)}
+.link-badge.new{background:var(--mc-pale);color:var(--mc)}
+
+/* ── OPEN ACTIONS ── */
+.actions-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+.actions-card h3{font-size:12px;font-weight:700;color:var(--mc-dark);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.actions-card h3 span{font-size:10px;font-weight:500;color:var(--ink-3)}
+.action-item{padding:8px 10px;border-radius:6px;border:1px solid var(--border);margin-bottom:7px;font-size:11px;line-height:1.4}
+.action-item:last-child{margin-bottom:0}
+.action-item.red{border-color:#fca5a5;background:#fef2f2}
+.action-item.amber{border-color:var(--amber-ring);background:var(--amber-bg)}
+.action-proj{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px}
+.action-item.red .action-proj{color:var(--red)}
+.action-item.amber .action-proj{color:var(--amber)}
+.action-text{color:var(--ink);font-weight:500}
+.action-owner{font-size:10px;color:var(--ink-3);margin-top:2px}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-top">
+    <div class="hero-logo">
+      <svg width="32" height="32" viewBox="0 0 30 30" fill="none"><polygon points="15,2 28,26 2,26" fill="#0054A4"/><polygon points="15,8 23.5,22 6.5,22" fill="#fff" opacity=".25"/></svg>
+      <div class="hero-wordmark">IS Portfolio Hub <span>Metropolitan Council · Metro Transit</span></div>
+    </div>
+  </div>
+  <div class="hero-h">TCC IS Projects — Portfolio Hub</div>
+  <div class="hero-sub">Three concurrent Information Services projects supporting the Transit Control Center expansion. This hub is the source of truth for IS project status, documents, milestones, and RAID tracking.</div>
+  <div class="hero-pills">
+    <span class="pill green"><span class="pill-dot"></span>TCC Expansion — IS Lead</span>
+    <span class="pill amber"><span class="pill-dot"></span>VuWall Video Wall — IS Coordination</span>
+    <span class="pill blue"><span class="pill-dot"></span>NG911 Refresh — IS Coordination</span>
+    <span class="pill blue">IS PM: PT (Ptahmes Tat-Siaka)</span>
+    <span class="pill blue">Updated: March 27, 2026</span>
+  </div>
+</div>
+
+<!-- CONSTRUCTION GATE -->
+<div class="gate">
+  <div class="gate-dot"></div>
+  <div><strong>Construction Gate:</strong> Notice of Award pending · NTP expected mid-late April 2026 (Robert Rimstad, SteerCo Mar 25) · Working assumption: construction September 2026 · Temporary ops: EBC Room 1007, OMF St. Paul · IS milestone dates derive from construction schedule — IS cannot influence. <strong>1:1 Slip Rule</strong> applies: every 1-week construction delay = 1-week IS milestone slip.</div>
+</div>
+
+<!-- PROJECT CARDS -->
+<div class="section-label">Project Status — March 27, 2026</div>
+<div class="proj-grid">
+
+  <!-- TCC EXPANSION -->
+  <a class="proj-card exp" href="#">
+    <div class="proj-card-top">
+      <div class="proj-tag">EXP · IS Lead</div>
+      <div class="proj-name">TCC Expansion</div>
+      <div class="proj-role">IS Infrastructure Refresh · 60 PCs · Phase 1: EBC Buildout</div>
+      <div class="rag amber"><div class="rag-dot amber"></div>Amber</div>
+    </div>
+    <div class="proj-card-body">
+      <div class="proj-stat-row">
+        <div class="proj-stat"><span class="proj-stat-n" style="color:var(--mc)">16</span><span class="proj-stat-l">EBC PCs</span></div>
+        <div class="proj-stat"><span class="proj-stat-n" style="color:var(--amber)">4</span><span class="proj-stat-l">Open Red</span></div>
+        <div class="proj-stat"><span class="proj-stat-n" style="color:var(--ink-3)">14</span><span class="proj-stat-l">RAID Items</span></div>
+      </div>
+      <div class="proj-next">
+        <div>
+          <div class="proj-next-lbl">Next Milestone</div>
+          <div class="proj-next-name">EBC Operational — 7 stations, Room 1007</div>
+        </div>
+        <div class="proj-next-date soon">Apr 30</div>
+      </div>
+    </div>
+    <div class="proj-card-footer">View project details <span>IS Lead →</span></div>
+  </a>
+
+  <!-- VUWALL -->
+  <a class="proj-card vuw" href="#">
+    <div class="proj-card-top">
+      <div class="proj-tag">VUW · IS Coordination</div>
+      <div class="proj-name">VuWall / KVM</div>
+      <div class="proj-role">Video Wall POC · PO issued Mar 26 · Non-refundable</div>
+      <div class="rag red"><div class="rag-dot red"></div>Red</div>
+    </div>
+    <div class="proj-card-body">
+      <div class="proj-stat-row">
+        <div class="proj-stat"><span class="proj-stat-n" style="color:var(--red)">3</span><span class="proj-stat-l">Open Red</span></div>
+        <div class="proj-stat"><span class="proj-stat-n" style="color:var(--amber)">2</span><span class="proj-stat-l">Open Actions</span></div>
+        <div class="proj-stat"><span class="proj-stat-n" style="color:var(--ink-3)">9</span><span class="proj-stat-l">RAID Items</span></div>
+      </div>
+      <div class="proj-next">
+        <div>
+          <div class="proj-next-lbl">Next Milestone</div>
+          <div class="proj-next-name">BCA design docs submitted (target Jun 2026)</div>
+        </div>
+        <div class="proj-next-date soon">May 15</div>
+      </div>
+    </div>
+    <div class="proj-card-footer">View project details <span>IS Coord →</span></div>
+  </a>
+
+  <!-- NG911 -->
+  <a class="proj-card ng911" href="#">
+    <div class="proj-card-top">
+      <div class="proj-tag">NG911 · IS Coordination</div>
+      <div class="proj-name">NG911 Refresh</div>
+      <div class="proj-role">Cloud-hosted managed solution · FE-led RFP · Multi-year</div>
+      <div class="rag amber"><div class="rag-dot amber"></div>Amber</div>
+    </div>
+    <div class="proj-card-body">
+      <div class="proj-stat-row">
+        <div class="proj-stat"><span class="proj-stat-n" style="color:var(--green)">4</span><span class="proj-stat-l">Mitel Lines</span></div>
+        <div class="proj-stat"><span class="proj-stat-n" style="color:var(--amber)">1</span><span class="proj-stat-l">Open Red</span></div>
+        <div class="proj-stat"><span class="proj-stat-n" style="color:var(--ink-3)">6</span><span class="proj-stat-l">RAID Items</span></div>
+      </div>
+      <div class="proj-next">
+        <div>
+          <div class="proj-next-lbl">Next Milestone</div>
+          <div class="proj-next-name">Deep-dive RFP requirements workshop</div>
+        </div>
+        <div class="proj-next-date">TBD / FE-led</div>
+      </div>
+    </div>
+    <div class="proj-card-footer">View project details <span>IS Coord →</span></div>
+  </a>
+
+</div>
+
+<!-- BOTTOM GRID -->
+<div class="bottom-grid">
+
+  <!-- QUICK LINKS -->
+  <div class="links-card">
+    <h3>Quick Links — Documents & Lists</h3>
+    <div class="link-group">
+      <div class="link-group-label">Project Artifacts</div>
+      <a class="link-item" href="#"><span class="link-icon">📋</span>Project Charter — TCC Expansion v1.0 <span class="link-badge new">New</span></a>
+      <a class="link-item" href="#"><span class="link-icon">👥</span>RACI Matrix — TCC Expansion v1.0 <span class="link-badge new">New</span></a>
+      <a class="link-item" href="#"><span class="link-icon">📐</span>Scope Statement — TCC Expansion v1.0 <span class="link-badge new">New</span></a>
+      <a class="link-item" href="#"><span class="link-icon">🗂️</span>Stakeholder Register v1.0 <span class="link-badge new">New</span></a>
+      <a class="link-item" href="#"><span class="link-icon">📣</span>Communication Plan v1.0 <span class="link-badge new">New</span></a>
+      <a class="link-item" href="#"><span class="link-icon">📊</span>WBS — Reconciled 921 Tasks (Mar 27)</a>
+      <a class="link-item" href="#"><span class="link-icon">⚠️</span>RAID Log — 33 Items (Mar 26) <span class="link-badge red">9 Red</span></a>
+    </div>
+    <div class="link-group">
+      <div class="link-group-label">Meeting Notes & Recordings</div>
+      <a class="link-item" href="#"><span class="link-icon">🎥</span>SteerCo Kick Off — March 25, 2026</a>
+      <a class="link-item" href="#"><span class="link-icon">📝</span>SteerCo Meeting Notes — March 25, 2026</a>
+      <a class="link-item" href="#"><span class="link-icon">📝</span>IS Infrastructure PM Meeting — March 30, 2026</a>
+    </div>
+    <div class="link-group">
+      <div class="link-group-label">SharePoint Lists</div>
+      <a class="link-item" href="#"><span class="link-icon">📋</span>IS Project RAID List</a>
+      <a class="link-item" href="#"><span class="link-icon">📋</span>IS Project Tasks List</a>
+      <a class="link-item" href="#"><span class="link-icon">📋</span>IS Milestones List</a>
+      <a class="link-item" href="#"><span class="link-icon">📋</span>IS Status Summary List</a>
+      <a class="link-item" href="#"><span class="link-icon">📋</span>Construction Gates List</a>
+    </div>
+  </div>
+
+  <!-- OPEN ACTIONS -->
+  <div class="actions-card">
+    <h3>Open Steering Committee Actions <span>As of Mar 25, 2026</span></h3>
+    <div class="action-item red">
+      <div class="action-proj">TCC Expansion</div>
+      <div class="action-text">Dedicated endpoint resource — confirm who and when</div>
+      <div class="action-owner">Owner: Gretchen White · Due: Apr 22 SteerCo</div>
+    </div>
+    <div class="action-item amber">
+      <div class="action-proj">TCC Expansion</div>
+      <div class="action-text">Apr 30 EBC target — formal review with dependency chain</div>
+      <div class="action-owner">Owner: IS PM · Due: Apr 22 SteerCo</div>
+    </div>
+    <div class="action-item red">
+      <div class="action-proj">VuWall</div>
+      <div class="action-text">PO path and timeline — CONFIRMED Mar 26</div>
+      <div class="action-owner">Owner: Tina Folch · Status: Complete ✓</div>
+    </div>
+    <div class="action-item amber">
+      <div class="action-proj">VuWall</div>
+      <div class="action-text">IS resource for POC support — confirm assignment</div>
+      <div class="action-owner">Owner: IS PM + Paul Burke · Due: After Mar 30 meeting</div>
+    </div>
+    <div class="action-item amber">
+      <div class="action-proj">All Projects</div>
+      <div class="action-text">Room 1007 power specs to contractor</div>
+      <div class="action-owner">Owner: Paul Burke + IES · Due: ASAP</div>
+    </div>
+    <div style="margin-top:14px;padding:8px 10px;background:var(--mc-pale);border:1px solid var(--mc-light);border-radius:6px;font-size:10px;color:var(--mc)">
+      <strong>Next SteerCo:</strong> Wednesday April 22, 2026 · Monthly cadence · IS PM facilitating
+    </div>
+  </div>
+
+</div>
+</div>
+</body>
+</html>
