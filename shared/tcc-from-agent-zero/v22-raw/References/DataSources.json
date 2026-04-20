@@ -1,0 +1,25 @@
+{
+  "FormatVersion": 1,
+  "DataSources": [
+    {
+      "Name": "'IS Project Tasks'",
+      "Type": "Connected",
+      "ConnectionId": "shared_sharepointonline",
+      "ApiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+      "DatasetName": "https://metcmn.sharepoint.com/sites/TCCISPortfolioHub",
+      "TableName": "IS Project Tasks",
+      "IsWritable": true,
+      "Description": "TCC IS Portfolio Hub - Project Tasks list (926 rows)"
+    },
+    {
+      "Name": "'IS Project RAID'",
+      "Type": "Connected",
+      "ConnectionId": "shared_sharepointonline",
+      "ApiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+      "DatasetName": "https://metcmn.sharepoint.com/sites/TCCISPortfolioHub",
+      "TableName": "IS Project RAID",
+      "IsWritable": true,
+      "Description": "TCC IS Portfolio Hub - RAID log list"
+    }
+  ]
+}
