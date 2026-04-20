@@ -1,0 +1,12 @@
+{
+  "FormatVersion": 1,
+  "MSAppFormatVersion": "2.1",
+  "SchemaVersion": "1.0",
+  "MinStudioVersion": "3.22000.0",
+  "Id": "1759e5f1-433a-4d19-826a-76d438ed1675",
+  "CreatedByVersion": "3.22000.0",
+  "Name": "TCC_Portfolio_Dashboard_v22",
+  "Description": "TCC IS Portfolio Hub v22 \u2014 Fixed PAC format: proper screen YAML headers, CanvasManifest.json, Checksum.json, ControlTemplates.json",
+  "LastSavedDateTimeUTC": "2026-04-20T23:00:00.000Z",
+  "BackgroundColor": "rgba(0,0,0,1)"
+}
