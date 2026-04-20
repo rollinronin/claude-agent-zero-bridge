@@ -1,0 +1,11 @@
+{
+  "FormatVersion": 1,
+  "LocalConnectionReferences": {
+    "shared_sharepointonline": {
+      "id": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+      "connectionName": "shared_sharepointonline",
+      "type": "NotSpecified"
+    }
+  },
+  "LocalDatabaseReferences": {}
+}
