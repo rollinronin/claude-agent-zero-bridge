@@ -1,0 +1,41 @@
+{
+  "FormatVersion": 1,
+  "ComponentsMetadata": {},
+  "TemplateStore": {
+    "http://microsoft.com/appmagic/screen": {
+      "Id": "http://microsoft.com/appmagic/screen",
+      "Name": "screen",
+      "Version": "1.0",
+      "LastModifiedTimestamp": "638000000000000000",
+      "Template": {}
+    },
+    "http://microsoft.com/appmagic/rectangle": {
+      "Id": "http://microsoft.com/appmagic/rectangle",
+      "Name": "Rectangle",
+      "Version": "1.0",
+      "LastModifiedTimestamp": "638000000000000000",
+      "Template": {}
+    },
+    "http://microsoft.com/appmagic/label": {
+      "Id": "http://microsoft.com/appmagic/label",
+      "Name": "Label",
+      "Version": "1.0",
+      "LastModifiedTimestamp": "638000000000000000",
+      "Template": {}
+    },
+    "http://microsoft.com/appmagic/button": {
+      "Id": "http://microsoft.com/appmagic/button",
+      "Name": "Button",
+      "Version": "1.0",
+      "LastModifiedTimestamp": "638000000000000000",
+      "Template": {}
+    },
+    "http://microsoft.com/appmagic/gallery": {
+      "Id": "http://microsoft.com/appmagic/gallery",
+      "Name": "Gallery",
+      "Version": "1.0",
+      "LastModifiedTimestamp": "638000000000000000",
+      "Template": {}
+    }
+  }
+}
