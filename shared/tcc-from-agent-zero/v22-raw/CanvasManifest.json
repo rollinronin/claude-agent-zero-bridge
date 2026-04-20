@@ -1,0 +1,22 @@
+{
+  "FormatVersion": 2,
+  "SaveFormat": "UnpackedTemplate",
+  "Header": {
+    "Id": "1fbdd7ba-6c42-46a4-97c3-905b0384ceac",
+    "Name": "TCC_Portfolio_Dashboard_v22",
+    "Type": "CanvasApp",
+    "TopParent": {
+      "Type": "screen"
+    }
+  },
+  "PublishInfo": {
+    "Description": "TCC IS Portfolio Hub \u2014 Metropolitan Council IS Department \u2014 v22",
+    "AppIcon": {
+      "Type": "DefaultAppIcon"
+    }
+  },
+  "ScreenOrder": [
+    "scrExecutive",
+    "scrDetail"
+  ]
+}
