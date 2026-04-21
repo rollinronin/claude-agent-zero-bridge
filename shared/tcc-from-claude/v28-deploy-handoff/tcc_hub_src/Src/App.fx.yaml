@@ -1,0 +1,156 @@
+App As appinfo:
+    BackEnabled: =true
+    Theme: =PowerAppsTheme
+    OnStart: |-
+        =Concurrent(
+            Set(gAppVersion, "v20.0-patched-v3"),
+            Set(gBuildDate,  "2026-04-17"),
+            Set(gAppTitle,   "IS Portfolio Hub"),
+            Set(gOrgName,    "Metropolitan Council"),
+            Set(gScreenW, 1366),
+            Set(gScreenH, 768),
+            Set(cHeader,      RGBA(  0,  29,  61, 1)),
+            Set(cKPIBand,     RGBA(  0,  22,  48, 1)),
+            Set(cAccent,      RGBA(  0, 151, 208, 1)),
+            Set(cAccentDark,  RGBA(  0, 107, 160, 1)),
+            Set(cFooter,      RGBA(  0,  18,  38, 1)),
+            Set(cTextWhite,   RGBA(255, 255, 255, 1)),
+            Set(cTextLight,   RGBA(217, 217, 217, 1)),
+            Set(cSurface,     RGBA(255, 255, 255, 1)),
+            Set(cSurfaceAlt,  RGBA(249, 250, 251, 1)),
+            Set(cBorderLight, RGBA(209, 213, 219, 1)),
+            Set(cBorderMed,   RGBA(156, 163, 175, 1)),
+            Set(cBgPage,      RGBA(229, 229, 234, 1)),
+            Set(cTextDark,    RGBA( 26,  26,  46, 1)),
+            Set(cTextBody,    RGBA( 51,  65,  85, 1)),
+            Set(cTextSub,     RGBA(107, 114, 128, 1)),
+            Set(cP222,        RGBA(  4,  57, 113, 1)),
+            Set(cP222Light,   RGBA(219, 234, 254, 1)),
+            Set(cP193,        RGBA(  0, 151, 208, 1)),
+            Set(cP193Light,   RGBA(224, 242, 254, 1)),
+            Set(cP11138,      RGBA(  0,  84, 164, 1)),
+            Set(cP11138Light, RGBA(219, 234, 254, 1)),
+            Set(cRAGGreen,    RGBA( 46, 125,  50, 1)),
+            Set(cRAGGreenBg,  RGBA(232, 245, 233, 1)),
+            Set(cRAGAmber,    RGBA(245, 124,   0, 1)),
+            Set(cRAGAmberBg,  RGBA(255, 243, 224, 1)),
+            Set(cRAGRed,      RGBA(198,  40,  40, 1)),
+            Set(cRAGRedBg,    RGBA(255, 235, 238, 1)),
+            Set(cRAGGrey,     RGBA(107, 114, 128, 1)),
+            Set(cRAGGreyBg,   RGBA(243, 244, 246, 1)),
+            Set(cRAIDRiskBg,   RGBA(255, 235, 238, 1)),
+            Set(cRAIDRiskFg,   RGBA(198,  40,  40, 1)),
+            Set(cRAIDRiskBdr,  RGBA(198,  40,  40, 1)),
+            Set(cRAIDIssueBg,  RGBA(255, 243, 224, 1)),
+            Set(cRAIDIssueFg,  RGBA(245, 124,   0, 1)),
+            Set(cRAIDIssueBdr, RGBA(245, 124,   0, 1)),
+            Set(cRAIDActBg,    RGBA(219, 234, 254, 1)),
+            Set(cRAIDActFg,    RGBA( 30,  64, 175, 1)),
+            Set(cRAIDActBdr,   RGBA( 59, 130, 246, 1)),
+            Set(cRAIDDecBg,    RGBA(237, 233, 254, 1)),
+            Set(cRAIDDecFg,    RGBA( 91,  33, 182, 1)),
+            Set(cRAIDDecBdr,   RGBA(139,  92, 246, 1)),
+            Set(cAttnBg,   RGBA(255, 243, 224, 1)),
+            Set(cAttnBdr,  RGBA(245, 124,   0, 1)),
+            Set(cD01Bg,    RGBA(255, 235, 238, 1)),  Set(cD01Fg, RGBA(198,  40,  40, 1)),
+            Set(cD02Bg,    RGBA(255, 237, 213, 1)),  Set(cD02Fg, RGBA(154,  52,  18, 1)),
+            Set(cD03Bg,    RGBA(219, 234, 254, 1)),  Set(cD03Fg, RGBA( 30,  64, 175, 1)),
+            Set(cD04Bg,    RGBA(237, 233, 254, 1)),  Set(cD04Fg, RGBA( 91,  33, 182, 1)),
+            Set(cProgTrack,    RGBA(229, 231, 235, 1)),
+            Set(cProgFillGood, RGBA( 46, 125,  50, 1)),
+            Set(cProgFillWarn, RGBA(245, 124,   0, 1)),
+            Set(cProgFillCrit, RGBA(198,  40,  40, 1)),
+            Set(cOverdueBg,    RGBA(198,  40,  40, 1)),
+            Set(cOverdueFg,    RGBA(255, 255, 255, 1)),
+            Set(gGate01Status, "complete"),
+            Set(gGate02Status, "blocked"),
+            Set(gGate03Status, "blocked"),
+            Set(gGate04Status, "caution"),
+            Set(gGate05Status, "caution"),
+            Set(gGate13Status, "pending"),
+            Set(gEBCDate,      Date(2026, 4, 26)),
+            Set(gHardStopDate, Date(2026, 4, 29)),
+            Set(gSelectedProject, ""),
+            Set(gFilterRAIDType,  "All"),
+            Set(gKPITotalTasks,  60),
+            Set(gKPIAvgComplete, 41),
+            Set(gKPIOverdue,     12),
+            Set(gKPICritical,     5),
+            Set(gKPIOpenRAID,    19),
+            Set(gRAIDRiskCt,      6),
+            Set(gRAIDIssueCt,     5),
+            Set(gRAIDActionCt,    5),
+            Set(gRAIDDecCt,       3),
+            ClearCollect(
+                colTasks,
+                Filter(
+                    'IS Project Tasks',
+                    'Active in Planner' = true
+                )
+            ),
+            ClearCollect(
+                colRAID,
+                Filter(
+                    'IS Project RAID',
+                    Status.Value = "Open"
+                )
+            )
+        );
+        Set(gDaysToEBC,      DateDiff(Today(), gEBCDate,      TimeUnit.Days));
+        Set(gDaysToHardStop, DateDiff(Today(), gHardStopDate, TimeUnit.Days));
+        ClearCollect(
+            colProjSummary,
+            ForAll(
+                Distinct(colTasks, Project.Value) As projItem,
+                With(
+                    {
+                        _projKey: projItem.Value,
+                        _grp: Filter(colTasks, Project.Value = projItem.Value)
+                    },
+                    {
+                        ProjectID:     _projKey,
+                        TotalTasks:    CountRows(_grp),
+                        CompleteTasks: CountRows(Filter(_grp, 'Percent Complete' >= 100)),
+                        OverdueTasks:  CountRows(Filter(_grp, 'Percent Complete' < 100 And 'Due Date' < Today())),
+                        PctComplete:
+                            If(CountRows(_grp) > 0,
+                               Round(CountRows(Filter(_grp, 'Percent Complete' >= 100)) / CountRows(_grp) * 100, 0),
+                               0)
+                    }
+                )
+            )
+        );
+        If(
+            CountRows(colTasks) > 0,
+            Concurrent(
+                Set(gKPITotalTasks, CountRows(colTasks)),
+                Set(gKPIOverdue,
+                    CountRows(Filter(colTasks,
+                        'Percent Complete' < 100 And
+                        'Due Date' < Today()
+                    ))
+                ),
+                Set(gKPIOpenRAID,   CountRows(colRAID)),
+                Set(gRAIDRiskCt,    CountRows(Filter(colRAID, 'RAID Type'.Value = "Risk"))),
+                Set(gRAIDIssueCt,   CountRows(Filter(colRAID, 'RAID Type'.Value = "Issue"))),
+                Set(gRAIDActionCt,  CountRows(Filter(colRAID, 'RAID Type'.Value = "Action"))),
+                Set(gRAIDDecCt,     CountRows(Filter(colRAID, 'RAID Type'.Value = "Decision")))
+            )
+        );
+        Set(
+            gProjects,
+            Table(
+                {ID: "TCC",    Name: "TCC Phone System",   ShortCode: "TCC",
+                 AccentColor: cP222,   LightColor: cP222Light,   RAG: "Amber"},
+                {ID: "NG911",  Name: "NG911 Integration",  ShortCode: "NG911",
+                 AccentColor: cP193,   LightColor: cP193Light,   RAG: "Red"},
+                {ID: "VuWall", Name: "VuWall Display Sys", ShortCode: "VuWall",
+                 AccentColor: cP11138, LightColor: cP11138Light, RAG: "Amber"}
+            )
+        );
+    Host As hostControl.DefaultHostControlVariant:
+        OnCancel: =false
+        OnEdit: =false
+        OnNew: =false
+        OnSave: =false
+        OnView: =false

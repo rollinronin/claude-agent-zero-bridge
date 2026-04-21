@@ -1,0 +1,855 @@
+scrExecutive As screen:
+    Fill: =cBgPage
+    Height: =768
+    Width: =1366
+    OnVisible: |-
+        =Set(gSelectedProject, "");
+        Set(gFilterRAIDType, "All")
+    rcvtHdr As rectangle:
+        X: =0
+        Y: =0
+        Width: =Parent.Width
+        Height: =72
+        Fill: =cHeader
+    lblHdrOrg As label:
+        X: =24
+        Y: =0
+        Width: =216
+        Height: =72
+        Text: ="Metropolitan Council"
+        Color: =cTextWhite
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Size: =13
+        LetterSpacing: =2
+        VerticalAlign: =VerticalAlign.Middle
+    lblHdrSep As label:
+        X: =242
+        Y: =0
+        Width: =28
+        Height: =72
+        Text: ="//"
+        Color: =cAccent
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Lighter
+        Size: =16
+        VerticalAlign: =VerticalAlign.Middle
+        Align: =Align.Center
+    lblHdrTitle As label:
+        X: =272
+        Y: =0
+        Width: =260
+        Height: =72
+        Text: ="IS Portfolio Hub"
+        Color: =cTextWhite
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Size: =13
+        LetterSpacing: =2
+        VerticalAlign: =VerticalAlign.Middle
+    lblHdrScreenName As label:
+        X: =820
+        Y: =8
+        Width: =360
+        Height: =28
+        Text: ="EXECUTIVE DASHBOARD"
+        Color: =RGBA(255,255,255,0.85)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =11
+        VerticalAlign: =VerticalAlign.Bottom
+        Align: =Align.Right
+    lblHdrDate As label:
+        X: =820
+        Y: =36
+        Width: =360
+        Height: =28
+        Text: =Concatenate("Data: ", Text(Today(), "[$-en-US]mmmm dd, yyyy"))
+        Color: =RGBA(255,255,255,0.55)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Normal
+        Size: =11
+        VerticalAlign: =VerticalAlign.Top
+        Align: =Align.Right
+    btnNavDetail As button:
+        X: =1232
+        Y: =20
+        Width: =110
+        Height: =32
+        Text: ="Detail"
+        Color: =cTextWhite
+        Fill: =cAccent
+        HoverFill: =cAccentDark
+        BorderColor: =RGBA(0,0,0,0)
+        BorderThickness: =0
+        RadiusTopLeft: =6
+        RadiusTopRight: =6
+        RadiusBottomLeft: =6
+        RadiusBottomRight: =6
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =11
+        OnSelect: =Navigate(scrDetail, ScreenTransition.Fade)
+    rcvtAccentBar As rectangle:
+        X: =0
+        Y: =72
+        Width: =Parent.Width
+        Height: =3
+        Fill: =cAccent
+    rcvtKPIBand As rectangle:
+        X: =0
+        Y: =75
+        Width: =Parent.Width
+        Height: =64
+        Fill: =cKPIBand
+    lblKV1 As label:
+        X: =24
+        Y: =82
+        Width: =155
+        Height: =30
+        Text: =Text(gKPITotalTasks)
+        Color: =cTextWhite
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Size: =26
+        VerticalAlign: =VerticalAlign.Middle
+    lblKL1 As label:
+        X: =24
+        Y: =112
+        Width: =155
+        Height: =18
+        Text: ="TOTAL TASKS"
+        Color: =RGBA(255,255,255,0.45)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =9
+        LetterSpacing: =1
+    rcvtKD1 As rectangle:
+        X: =193
+        Y: =84
+        Width: =1
+        Height: =44
+        Fill: =RGBA(255,255,255,0.08)
+    lblKV2 As label:
+        X: =205
+        Y: =82
+        Width: =155
+        Height: =30
+        Text: =Text(gKPIAvgComplete) & "%"
+        Color: =cRAGAmber
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Size: =26
+        VerticalAlign: =VerticalAlign.Middle
+    lblKL2 As label:
+        X: =205
+        Y: =112
+        Width: =155
+        Height: =18
+        Text: ="AVG COMPLETE"
+        Color: =RGBA(255,255,255,0.45)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =9
+        LetterSpacing: =1
+    rcvtKD2 As rectangle:
+        X: =374
+        Y: =84
+        Width: =1
+        Height: =44
+        Fill: =RGBA(255,255,255,0.08)
+    lblKV3 As label:
+        X: =386
+        Y: =82
+        Width: =155
+        Height: =30
+        Text: =Text(gKPIOverdue)
+        Color: =RGBA(239,83,80,1)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Size: =26
+        VerticalAlign: =VerticalAlign.Middle
+    lblKL3 As label:
+        X: =386
+        Y: =112
+        Width: =155
+        Height: =18
+        Text: ="OVERDUE TASKS"
+        Color: =RGBA(255,255,255,0.45)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =9
+        LetterSpacing: =1
+    rcvtKD3 As rectangle:
+        X: =555
+        Y: =84
+        Width: =1
+        Height: =44
+        Fill: =RGBA(255,255,255,0.08)
+    lblKV4 As label:
+        X: =567
+        Y: =82
+        Width: =130
+        Height: =30
+        Text: =Text(gKPIOpenRAID)
+        Color: =cTextWhite
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Size: =26
+        VerticalAlign: =VerticalAlign.Middle
+    lblKL4 As label:
+        X: =567
+        Y: =112
+        Width: =130
+        Height: =18
+        Text: ="OPEN RAID"
+        Color: =RGBA(255,255,255,0.45)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =9
+        LetterSpacing: =1
+    rcvtKD4 As rectangle:
+        X: =711
+        Y: =84
+        Width: =1
+        Height: =44
+        Fill: =RGBA(255,255,255,0.08)
+    lblKV5 As label:
+        X: =723
+        Y: =82
+        Width: =130
+        Height: =30
+        Text: =Text(gKPICritical)
+        Color: =If(gKPICritical > 0, RGBA(239,83,80,1), cTextWhite)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Size: =26
+        VerticalAlign: =VerticalAlign.Middle
+    lblKL5 As label:
+        X: =723
+        Y: =112
+        Width: =130
+        Height: =18
+        Text: ="CRITICAL"
+        Color: =RGBA(255,255,255,0.45)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =9
+        LetterSpacing: =1
+    rcvtKD5 As rectangle:
+        X: =867
+        Y: =84
+        Width: =1
+        Height: =44
+        Fill: =RGBA(255,255,255,0.08)
+    lblKV6 As label:
+        X: =879
+        Y: =82
+        Width: =150
+        Height: =30
+        Text: =Text(gDaysToEBC) & "d"
+        Color: =cAccent
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Size: =26
+        VerticalAlign: =VerticalAlign.Middle
+    lblKL6 As label:
+        X: =879
+        Y: =112
+        Width: =150
+        Height: =18
+        Text: ="DAYS TO EBC"
+        Color: =RGBA(255,255,255,0.45)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =9
+        LetterSpacing: =1
+    rcvtKD6 As rectangle:
+        X: =1043
+        Y: =84
+        Width: =1
+        Height: =44
+        Fill: =RGBA(255,255,255,0.08)
+    lblKV7 As label:
+        X: =1055
+        Y: =82
+        Width: =220
+        Height: =30
+        Text: =Text(gDaysToHardStop) & "d"
+        Color: =cRAGAmber
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Size: =26
+        VerticalAlign: =VerticalAlign.Middle
+    lblKL7 As label:
+        X: =1055
+        Y: =112
+        Width: =220
+        Height: =18
+        Text: ="DAYS TO HARD STOP"
+        Color: =RGBA(255,255,255,0.45)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =9
+        LetterSpacing: =1
+    rcvtAttnBg As rectangle:
+        X: =0
+        Y: =139
+        Width: =Parent.Width
+        Height: =80
+        Fill: =cAttnBg
+    rcvtAttnBdr As rectangle:
+        X: =0
+        Y: =139
+        Width: =4
+        Height: =80
+        Fill: =cAttnBdr
+    lblAttnTitle As label:
+        X: =14
+        Y: =143
+        Width: =240
+        Height: =16
+        Text: ="! DECISIONS REQUIRED"
+        Color: =RGBA(124,71,0,1)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Size: =10
+    rcvtD01Bg As rectangle:
+        X: =14
+        Y: =161
+        Width: =316
+        Height: =52
+        Fill: =cD01Bg
+        RadiusTopLeft: =6
+        RadiusTopRight: =6
+        RadiusBottomLeft: =6
+        RadiusBottomRight: =6
+    rcvtD01Bar As rectangle:
+        X: =14
+        Y: =161
+        Width: =4
+        Height: =52
+        Fill: =cD01Fg
+        RadiusTopLeft: =6
+        RadiusTopRight: =0
+        RadiusBottomLeft: =6
+        RadiusBottomRight: =0
+    lblD01Code As label:
+        X: =24
+        Y: =163
+        Width: =40
+        Height: =16
+        Text: ="D-01"
+        Color: =cD01Fg
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Size: =9
+    lblD01Text As label:
+        X: =24
+        Y: =180
+        Width: =298
+        Height: =28
+        Text: ="Cable plant contract — sign-off required"
+        Color: =cTextDark
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Normal
+        Size: =10
+        Overflow: =Overflow.Hidden
+    rcvtD02Bg As rectangle:
+        X: =342
+        Y: =161
+        Width: =316
+        Height: =52
+        Fill: =cD02Bg
+        RadiusTopLeft: =6
+        RadiusTopRight: =6
+        RadiusBottomLeft: =6
+        RadiusBottomRight: =6
+    rcvtD02Bar As rectangle:
+        X: =342
+        Y: =161
+        Width: =4
+        Height: =52
+        Fill: =cD02Fg
+        RadiusTopLeft: =6
+        RadiusTopRight: =0
+        RadiusBottomLeft: =6
+        RadiusBottomRight: =0
+    lblD02Code As label:
+        X: =352
+        Y: =163
+        Width: =40
+        Height: =16
+        Text: ="D-02"
+        Color: =cD02Fg
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Size: =9
+    lblD02Text As label:
+        X: =352
+        Y: =180
+        Width: =298
+        Height: =28
+        Text: ="NG911 vendor SLA — approval pending"
+        Color: =cTextDark
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Normal
+        Size: =10
+        Overflow: =Overflow.Hidden
+    rcvtD03Bg As rectangle:
+        X: =670
+        Y: =161
+        Width: =316
+        Height: =52
+        Fill: =cD03Bg
+        RadiusTopLeft: =6
+        RadiusTopRight: =6
+        RadiusBottomLeft: =6
+        RadiusBottomRight: =6
+    rcvtD03Bar As rectangle:
+        X: =670
+        Y: =161
+        Width: =4
+        Height: =52
+        Fill: =cD03Fg
+        RadiusTopLeft: =6
+        RadiusTopRight: =0
+        RadiusBottomLeft: =6
+        RadiusBottomRight: =0
+    lblD03Code As label:
+        X: =680
+        Y: =163
+        Width: =40
+        Height: =16
+        Text: ="D-03"
+        Color: =cD03Fg
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Size: =9
+    lblD03Text As label:
+        X: =680
+        Y: =180
+        Width: =298
+        Height: =28
+        Text: ="VuWall display config — scope confirm"
+        Color: =cTextDark
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Normal
+        Size: =10
+        Overflow: =Overflow.Hidden
+    rcvtD04Bg As rectangle:
+        X: =998
+        Y: =161
+        Width: =316
+        Height: =52
+        Fill: =cD04Bg
+        RadiusTopLeft: =6
+        RadiusTopRight: =6
+        RadiusBottomLeft: =6
+        RadiusBottomRight: =6
+    rcvtD04Bar As rectangle:
+        X: =998
+        Y: =161
+        Width: =4
+        Height: =52
+        Fill: =cD04Fg
+        RadiusTopLeft: =6
+        RadiusTopRight: =0
+        RadiusBottomLeft: =6
+        RadiusBottomRight: =0
+    lblD04Code As label:
+        X: =1008
+        Y: =163
+        Width: =40
+        Height: =16
+        Text: ="D-04"
+        Color: =cD04Fg
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Size: =9
+    lblD04Text As label:
+        X: =1008
+        Y: =180
+        Width: =298
+        Height: =28
+        Text: ="EBC migration resource allocation"
+        Color: =cTextDark
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Normal
+        Size: =10
+        Overflow: =Overflow.Hidden
+    rcvtPHdrBg As rectangle:
+        X: =0
+        Y: =219
+        Width: =Parent.Width
+        Height: =30
+        Fill: =cSurface
+        BorderColor: =cBorderLight
+        BorderThickness: =1
+    lblPHdrName As label:
+        X: =30
+        Y: =219
+        Width: =220
+        Height: =30
+        Text: ="PROJECT"
+        Color: =cTextSub
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Size: =10
+        LetterSpacing: =1
+        VerticalAlign: =VerticalAlign.Middle
+    lblPHdrProg As label:
+        X: =260
+        Y: =219
+        Width: =480
+        Height: =30
+        Text: ="PROGRESS  /  TASK STATS"
+        Color: =cTextSub
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Size: =10
+        LetterSpacing: =1
+        VerticalAlign: =VerticalAlign.Middle
+    lblPHdrRAG As label:
+        X: =760
+        Y: =219
+        Width: =80
+        Height: =30
+        Text: ="STATUS"
+        Color: =cTextSub
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Size: =10
+        LetterSpacing: =1
+        VerticalAlign: =VerticalAlign.Middle
+        Align: =Align.Center
+    lblPHdrGates As label:
+        X: =860
+        Y: =219
+        Width: =480
+        Height: =30
+        Text: ="G-GATE PROGRESS"
+        Color: =cTextSub
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Size: =10
+        LetterSpacing: =1
+        VerticalAlign: =VerticalAlign.Middle
+    "galExecProjects As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0'":
+        X: =0
+        Y: =249
+        Width: =Parent.Width
+        Height: =427
+        Items: =gProjects
+        TemplateSize: =142
+        ShowScrollbar: =false
+        BorderColor: =RGBA(0,0,0,0)
+        BorderThickness: =0
+        Fill: =RGBA(0,0,0,0)
+        WrapCount: =1
+        rcvtPRowBg As rectangle:
+            X: =0
+            Y: =0
+            Width: =Parent.TemplateWidth
+            Height: =Parent.TemplateHeight
+            Fill: =cSurface
+            BorderColor: =cBorderLight
+            BorderThickness: =1
+        rcvtPRowAccent As rectangle:
+            X: =0
+            Y: =0
+            Width: =5
+            Height: =Parent.TemplateHeight
+            Fill: =ThisItem.AccentColor
+        lblPRowName As label:
+            X: =18
+            Y: =12
+            Width: =220
+            Height: =24
+            Text: =ThisItem.Name
+            Color: =cTextDark
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Bold
+            Size: =13
+            VerticalAlign: =VerticalAlign.Middle
+        rcvtPCodeBg As rectangle:
+            X: =18
+            Y: =40
+            Width: =56
+            Height: =20
+            Fill: =ThisItem.LightColor
+            RadiusTopLeft: =10
+            RadiusTopRight: =10
+            RadiusBottomLeft: =10
+            RadiusBottomRight: =10
+        lblPCode As label:
+            X: =18
+            Y: =40
+            Width: =56
+            Height: =20
+            Text: =ThisItem.ShortCode
+            Color: =ThisItem.AccentColor
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Bold
+            Size: =9
+            Align: =Align.Center
+            VerticalAlign: =VerticalAlign.Middle
+        lblPID As label:
+            X: =82
+            Y: =40
+            Width: =100
+            Height: =20
+            Text: =Concatenate("P-", ThisItem.ID)
+            Color: =cTextSub
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Normal
+            Size: =10
+            VerticalAlign: =VerticalAlign.Middle
+        rcvtPProgTrack As rectangle:
+            X: =18
+            Y: =70
+            Width: =500
+            Height: =8
+            Fill: =cProgTrack
+            RadiusTopLeft: =4
+            RadiusTopRight: =4
+            RadiusBottomLeft: =4
+            RadiusBottomRight: =4
+        rcvtPProgFill As rectangle:
+            X: =18
+            Y: =70
+            Width: =Max(2, 500 * (Value(LookUp(colProjSummary, ProjectID = ThisItem.ID, PctComplete)) / 100))
+            Height: =8
+            Fill: =With({pct: Value(LookUp(colProjSummary, ProjectID = ThisItem.ID, PctComplete))}, If(pct >= 80, cProgFillGood, pct >= 40, cProgFillWarn, cProgFillCrit))
+            RadiusTopLeft: =4
+            RadiusTopRight: =4
+            RadiusBottomLeft: =4
+            RadiusBottomRight: =4
+        lblPPct As label:
+            X: =526
+            Y: =63
+            Width: =60
+            Height: =22
+            Text: =Text(Value(LookUp(colProjSummary, ProjectID = ThisItem.ID, PctComplete))) & "%"
+            Color: =cTextBody
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Bold
+            Size: =11
+            VerticalAlign: =VerticalAlign.Middle
+        lblPStatTotal As label:
+            X: =18
+            Y: =86
+            Width: =120
+            Height: =18
+            Text: =Concatenate(Text(LookUp(colProjSummary, ProjectID = ThisItem.ID, TotalTasks)), " tasks")
+            Color: =cTextSub
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Normal
+            Size: =10
+        lblPStatDone As label:
+            X: =148
+            Y: =86
+            Width: =100
+            Height: =18
+            Text: =Concatenate(Text(LookUp(colProjSummary, ProjectID = ThisItem.ID, CompleteTasks)), " done")
+            Color: =cRAGGreen
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Size: =10
+        rcvtPOvdBg As rectangle:
+            X: =258
+            Y: =82
+            Width: =72
+            Height: =22
+            Fill: =cOverdueBg
+            RadiusTopLeft: =11
+            RadiusTopRight: =11
+            RadiusBottomLeft: =11
+            RadiusBottomRight: =11
+            Visible: =Value(LookUp(colProjSummary, ProjectID = ThisItem.ID, OverdueTasks)) > 0
+        lblPOvd As label:
+            X: =258
+            Y: =82
+            Width: =72
+            Height: =22
+            Text: =Concatenate(Text(LookUp(colProjSummary, ProjectID = ThisItem.ID, OverdueTasks)), " overdue")
+            Color: =cOverdueFg
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Bold
+            Size: =9
+            Align: =Align.Center
+            VerticalAlign: =VerticalAlign.Middle
+            Visible: =Value(LookUp(colProjSummary, ProjectID = ThisItem.ID, OverdueTasks)) > 0
+        rcvtPRAGCircle As rectangle:
+            X: =768
+            Y: =53
+            Width: =36
+            Height: =36
+            Fill: =Switch(ThisItem.RAG, "Green", cRAGGreen, "Red", cRAGRed, "Amber", cRAGAmber, cRAGGrey)
+            RadiusTopLeft: =18
+            RadiusTopRight: =18
+            RadiusBottomLeft: =18
+            RadiusBottomRight: =18
+        lblPRAGLetter As label:
+            X: =768
+            Y: =53
+            Width: =36
+            Height: =36
+            Text: =Upper(Left(ThisItem.RAG, 1))
+            Color: =cTextWhite
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Bold
+            Size: =11
+            Align: =Align.Center
+            VerticalAlign: =VerticalAlign.Middle
+        lblPGates As label:
+            X: =860
+            Y: =50
+            Width: =490
+            Height: =42
+            Text: ="G-01 [OK]  G-02 [X]  G-03 [X]  G-04 [!]  G-05 [!]  G-13 [...]"
+            Color: =cTextBody
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Normal
+            Size: =12
+            VerticalAlign: =VerticalAlign.Middle
+        btnPDetail As button:
+            X: =1292
+            Y: =57
+            Width: =62
+            Height: =28
+            Text: ="Detail"
+            Color: =cAccent
+            Fill: =RGBA(0,0,0,0)
+            HoverFill: =RGBA(0,151,208,0.08)
+            BorderColor: =cAccent
+            BorderThickness: =1
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Size: =10
+            OnSelect: |-
+                =Set(gSelectedProject, ThisItem.ID);
+                Navigate(scrDetail, ScreenTransition.Fade)
+    rcvtExCtxBand As rectangle:
+        X: =0
+        Y: =686
+        Width: =Parent.Width
+        Height: =40
+        Fill: =cHeader
+    lblExCtxL1 As label:
+        X: =24
+        Y: =689
+        Width: =80
+        Height: =13
+        Text: ="AS OF"
+        Color: =RGBA(255,255,255,0.4)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =8
+        LetterSpacing: =1
+    lblExCtxV1 As label:
+        X: =24
+        Y: =702
+        Width: =160
+        Height: =18
+        Text: =Text(Today(), "[$-en-US]mmmm d, yyyy")
+        Color: =cTextWhite
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =11
+    lblExCtxL2 As label:
+        X: =210
+        Y: =689
+        Width: =80
+        Height: =13
+        Text: ="PROJECTS"
+        Color: =RGBA(255,255,255,0.4)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =8
+        LetterSpacing: =1
+    lblExCtxV2 As label:
+        X: =210
+        Y: =702
+        Width: =60
+        Height: =18
+        Text: =Text(CountRows(gProjects))
+        Color: =cTextWhite
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =11
+    lblExCtxL3 As label:
+        X: =310
+        Y: =689
+        Width: =100
+        Height: =13
+        Text: ="EBC COUNTDOWN"
+        Color: =RGBA(255,255,255,0.4)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =8
+        LetterSpacing: =1
+    lblExCtxV3 As label:
+        X: =310
+        Y: =702
+        Width: =130
+        Height: =18
+        Text: =Text(gDaysToEBC) & "d remaining"
+        Color: =If(gDaysToEBC < 30, RGBA(239,83,80,1), cTextWhite)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =11
+    lblExCtxL4 As label:
+        X: =470
+        Y: =689
+        Width: =100
+        Height: =13
+        Text: ="OPEN RAID"
+        Color: =RGBA(255,255,255,0.4)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =8
+        LetterSpacing: =1
+    lblExCtxV4 As label:
+        X: =470
+        Y: =702
+        Width: =80
+        Height: =18
+        Text: =Text(gKPIOpenRAID)
+        Color: =If(gKPIOpenRAID > 10, RGBA(239,83,80,1), cTextWhite)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =11
+    rcvtExFooter As rectangle:
+        X: =0
+        Y: =726
+        Width: =Parent.Width
+        Height: =42
+        Fill: =cFooter
+    lblExFooterL As label:
+        X: =24
+        Y: =726
+        Width: =700
+        Height: =42
+        Text: =Concatenate(gOrgName, "  //  ", gAppTitle, "  ", gAppVersion)
+        Color: =RGBA(255,255,255,0.35)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Normal
+        Size: =10
+        VerticalAlign: =VerticalAlign.Middle
+    lblExFooterR As label:
+        X: =966
+        Y: =726
+        Width: =376
+        Height: =42
+        Text: =Concatenate("Build: ", gBuildDate, "  |  IS Department")
+        Color: =RGBA(255,255,255,0.35)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Normal
+        Size: =10
+        VerticalAlign: =VerticalAlign.Middle
+        Align: =Align.Right
