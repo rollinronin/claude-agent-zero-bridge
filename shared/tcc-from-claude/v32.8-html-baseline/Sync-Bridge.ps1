@@ -7,10 +7,19 @@ $WorkspaceFolder = "$HOME\OneDrive\Documents\Claude\Projects\TCC IS Portfolio Hu
 
 function Write-Section($msg) { Write-Host "`n==> $msg" -ForegroundColor Cyan }
 
-# 1. Find the bridge clone if not specified
-if (-not $BridgeRoot -or -not (Test-Path $BridgeRoot)) {
+function Test-IsValidBridgeClone($p) {
+    return $p -and (Test-Path $p) -and (Test-Path (Join-Path $p ".git"))
+}
+
+# 1. Find the bridge clone if not specified (or specified path is invalid)
+if (-not (Test-IsValidBridgeClone $BridgeRoot)) {
+    if ($BridgeRoot) {
+        Write-Host "Ignoring invalid BridgeRoot='$BridgeRoot' (not a git clone) - rediscovering" -ForegroundColor Yellow
+        $BridgeRoot = $null
+    }
     Write-Section "Auto-discovering claude-agent-zero-bridge clone"
     $candidates = @(
+        "$HOME\OneDrive\Documents\Claude\Projects\claude-agent-zero-bridge",
         "$HOME\Documents\GitHub\claude-agent-zero-bridge",
         "$HOME\Documents\claude-agent-zero-bridge",
         "$HOME\source\repos\claude-agent-zero-bridge",
@@ -35,8 +44,8 @@ if (-not $BridgeRoot -or -not (Test-Path $BridgeRoot)) {
     }
 }
 
-if (-not $BridgeRoot) {
-    Write-Host "`nFAIL: claude-agent-zero-bridge clone not found." -ForegroundColor Red
+if (-not (Test-IsValidBridgeClone $BridgeRoot)) {
+    Write-Host "`nFAIL: no valid claude-agent-zero-bridge clone (with .git) found." -ForegroundColor Red
     Write-Host "  Options to fix:" -ForegroundColor Yellow
     Write-Host "  1. Tell me where it is:  .\Sync-Bridge.ps1 -BridgeRoot 'C:\path\to\clone'" -ForegroundColor Yellow
     Write-Host "  2. Set env variable:     `$env:TCC_BRIDGE_REPO = 'C:\path\to\clone'" -ForegroundColor Yellow
