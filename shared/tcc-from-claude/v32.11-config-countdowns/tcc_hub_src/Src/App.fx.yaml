@@ -3,7 +3,7 @@ App As appinfo:
     Theme: =PowerAppsTheme
     OnStart: |-
         =Concurrent(
-            Set(gAppVersion, "v32.11-config-countdowns"),
+            Set(gAppVersion, "v32.11.1-config-countdowns"),
             Set(gBuildDate,  "2026-04-23"),
             Set(gAppTitle,   "IS Portfolio Hub"),
             Set(gOrgName,    "Metropolitan Council"),
@@ -102,9 +102,9 @@ App As appinfo:
                 'IS Portfolio Config'
             )
         );
-        Set(gEBCDate,         Coalesce(LookUp(colConfig, Key = "RoomReadyDate").ConfigValue,     Date(2026, 8, 15)));
-        Set(gStateFairDate,   Coalesce(LookUp(colConfig, Key = "StateFairStart").ConfigValue,    Date(2026, 8, 21)));
-        Set(gTCCFinalDate,    Coalesce(LookUp(colConfig, Key = "TCCFinalComplete").ConfigValue,  Date(2026, 12, 31)));
+        Set(gEBCDate,         Coalesce(LookUp(colConfig, Key = "RoomReadyDate").TargetDate,     Date(2026, 8, 15)));
+        Set(gStateFairDate,   Coalesce(LookUp(colConfig, Key = "StateFairStart").TargetDate,    Date(2026, 8, 21)));
+        Set(gTCCFinalDate,    Coalesce(LookUp(colConfig, Key = "TCCFinalComplete").TargetDate,  Date(2026, 12, 31)));
         Set(gDaysToEBC,       DateDiff(Today(), gEBCDate,        TimeUnit.Days));
         Set(gDaysToStateFair, DateDiff(Today(), gStateFairDate,  TimeUnit.Days));
         Set(gDaysToTCCFinal,  DateDiff(Today(), gTCCFinalDate,   TimeUnit.Days));

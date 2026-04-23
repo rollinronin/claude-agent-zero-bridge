@@ -84,38 +84,39 @@
     );
     log('field.key', keyRes);
 
-    // 4. Value field — DateTime, DateOnly format
+    // 4. TargetDate field — DateTime, DateOnly format
+    // DisplayName == Name because SP ignores Name when DisplayName differs (hard-won lesson 2026-04-23).
+    // Using "TargetDate" not "Value" to sidestep Power Fx Value() reserved-word collision.
     const valRes = await addField(
-        `<Field Type="DateTime" DisplayName="Value" Name="ConfigValue" Format="DateOnly" FriendlyDisplayFormat="Disabled" />`
+        `<Field Type="DateTime" DisplayName="TargetDate" Name="TargetDate" Format="DateOnly" FriendlyDisplayFormat="Disabled" />`
     );
-    log('field.value', valRes);
-    // Note: internal name forced to ConfigValue (not "Value") to avoid collision with SP system reserved tokens.
+    log('field.targetDate', valRes);
 
-    // 5. Notes field — MultiLineText plain
+    // 5. Context field — MultiLineText plain. "Notes" display + "Context" internal also fails SP's DisplayName-wins rule.
     const notesRes = await addField(
-        `<Field Type="Note" DisplayName="Notes" Name="ConfigNotes" NumLines="4" RichText="FALSE" />`
+        `<Field Type="Note" DisplayName="Context" Name="Context" NumLines="4" RichText="FALSE" />`
     );
-    log('field.notes', notesRes);
+    log('field.context', notesRes);
 
     // 6. Seed rows
     const seed = [
         {
             Title: 'Room 1007 Go-Live',
             Key: 'RoomReadyDate',
-            ConfigValue: '2026-08-15',
-            ConfigNotes: 'Pre-State-Fair target; earlier if achievable. Drives DAYS TO EBC countdown on scrExecutive.'
+            TargetDate: '2026-08-15',
+            Context: 'Pre-State-Fair target; earlier if achievable. Drives DAYS TO EBC countdown on scrExecutive.'
         },
         {
             Title: 'MN State Fair Start',
             Key: 'StateFairStart',
-            ConfigValue: '2026-08-21',
-            ConfigNotes: 'Hard stop for TCC load-peak window. Disruption risk during Fair is unacceptable. Drives DAYS TO STATE FAIR countdown.'
+            TargetDate: '2026-08-21',
+            Context: 'Hard stop for TCC load-peak window. Disruption risk during Fair is unacceptable. Drives DAYS TO STATE FAIR countdown.'
         },
         {
             Title: 'TCC Final Construction Complete',
             Key: 'TCCFinalComplete',
-            ConfigValue: '2026-12-31',
-            ConfigNotes: 'Long-horizon anchor; precedes Council+MTPD Go-Live (~Mar 2027). Drives DAYS TO TCC FINAL countdown. Revise when construction PM confirms actual date.'
+            TargetDate: '2026-12-31',
+            Context: 'Long-horizon anchor; precedes Council+MTPD Go-Live (~Mar 2027). Drives DAYS TO TCC FINAL countdown. Revise when construction PM confirms actual date.'
         }
     ];
 
