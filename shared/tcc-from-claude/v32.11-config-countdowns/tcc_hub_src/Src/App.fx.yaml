@@ -1,0 +1,361 @@
+App As appinfo:
+    BackEnabled: =true
+    Theme: =PowerAppsTheme
+    OnStart: |-
+        =Concurrent(
+            Set(gAppVersion, "v32.11-config-countdowns"),
+            Set(gBuildDate,  "2026-04-23"),
+            Set(gAppTitle,   "IS Portfolio Hub"),
+            Set(gOrgName,    "Metropolitan Council"),
+            Set(gScreenW, 1366),
+            Set(gScreenH, 768),
+            Set(cHeader,      RGBA(  0,  29,  61, 1)),
+            Set(cKPIBand,     RGBA(  0,  22,  48, 1)),
+            Set(cAccent,      RGBA(  0, 151, 208, 1)),
+            Set(cAccentDark,  RGBA(  0, 107, 160, 1)),
+            Set(cFooter,      RGBA(  0,  18,  38, 1)),
+            Set(cTextWhite,   RGBA(255, 255, 255, 1)),
+            Set(cTextLight,   RGBA(217, 217, 217, 1)),
+            Set(cSurface,     RGBA(255, 255, 255, 1)),
+            Set(cSurfaceAlt,  RGBA(241, 243, 247, 1)),
+            Set(cBorderLight, RGBA(209, 213, 219, 1)),
+            Set(cBorderMed,   RGBA(156, 163, 175, 1)),
+            Set(cNeutral50,   RGBA(252, 252, 252, 1)),
+            Set(cNeutral300,  RGBA(214, 214, 214, 1)),
+            Set(cNeutral500,  RGBA(117, 117, 117, 1)),
+            Set(cBgPage,      RGBA(245, 245, 244, 1)),
+            Set(cTextDark,    RGBA( 26,  26,  46, 1)),
+            Set(cTextBody,    RGBA( 51,  65,  85, 1)),
+            Set(cTextSub,     RGBA(107, 114, 128, 1)),
+            Set(cP222,        RGBA(  4,  57, 113, 1)),
+            Set(cP222Light,   RGBA(219, 234, 254, 1)),
+            Set(cP193,        RGBA(  0, 151, 208, 1)),
+            Set(cP193Light,   RGBA(224, 242, 254, 1)),
+            Set(cP11138,      RGBA(  0,  84, 164, 1)),
+            Set(cP11138Light, RGBA(219, 234, 254, 1)),
+            Set(cRAGGreen,    RGBA( 46, 125,  50, 1)),
+            Set(cRAGGreenBg,  RGBA(232, 245, 233, 1)),
+            Set(cRAGAmber,    RGBA(245, 124,   0, 1)),
+            Set(cRAGAmberBg,  RGBA(255, 243, 224, 1)),
+            Set(cRAGRed,      RGBA(198,  40,  40, 1)),
+            Set(cRAGRedBg,    RGBA(255, 235, 238, 1)),
+            Set(cRAGGrey,     RGBA(107, 114, 128, 1)),
+            Set(cRAGGreyBg,   RGBA(243, 244, 246, 1)),
+            Set(cRAIDRiskBg,   RGBA(255, 235, 238, 1)),
+            Set(cRAIDRiskFg,   RGBA(198,  40,  40, 1)),
+            Set(cRAIDRiskBdr,  RGBA(198,  40,  40, 1)),
+            Set(cRAIDIssueBg,  RGBA(255, 243, 224, 1)),
+            Set(cRAIDIssueFg,  RGBA(245, 124,   0, 1)),
+            Set(cRAIDIssueBdr, RGBA(245, 124,   0, 1)),
+            Set(cRAIDActBg,    RGBA(219, 234, 254, 1)),
+            Set(cRAIDActFg,    RGBA( 30,  64, 175, 1)),
+            Set(cRAIDActBdr,   RGBA( 59, 130, 246, 1)),
+            Set(cRAIDDecBg,    RGBA(237, 233, 254, 1)),
+            Set(cRAIDDecFg,    RGBA( 91,  33, 182, 1)),
+            Set(cRAIDDecBdr,   RGBA(139,  92, 246, 1)),
+            Set(cAttnBg,   RGBA(255, 243, 224, 1)),
+            Set(cAttnBdr,  RGBA(245, 124,   0, 1)),
+            Set(cD01Bg,    RGBA(255, 235, 238, 1)),  Set(cD01Fg, RGBA(198,  40,  40, 1)),
+            Set(cD02Bg,    RGBA(255, 237, 213, 1)),  Set(cD02Fg, RGBA(154,  52,  18, 1)),
+            Set(cD03Bg,    RGBA(219, 234, 254, 1)),  Set(cD03Fg, RGBA( 30,  64, 175, 1)),
+            Set(cD04Bg,    RGBA(237, 233, 254, 1)),  Set(cD04Fg, RGBA( 91,  33, 182, 1)),
+            Set(cProgTrack,    RGBA(229, 231, 235, 1)),
+            Set(cProgFillGood, RGBA( 46, 125,  50, 1)),
+            Set(cProgFillWarn, RGBA(245, 124,   0, 1)),
+            Set(cProgFillCrit, RGBA(198,  40,  40, 1)),
+            Set(cOverdueBg,    RGBA(198,  40,  40, 1)),
+            Set(cOverdueFg,    RGBA(255, 255, 255, 1)),
+            Set(gGate01Status, "complete"),
+            Set(gGate02Status, "blocked"),
+            Set(gGate03Status, "blocked"),
+            Set(gGate04Status, "caution"),
+            Set(gGate05Status, "caution"),
+            Set(gGate13Status, "pending"),
+            Set(gSelectedProject, ""),
+            Set(gFilterRAIDType,  "All"),
+            Set(gKPITotalTasks,  60),
+            Set(gKPIAvgComplete, 41),
+            Set(gKPIOverdue,     12),
+            Set(gKPICritical,     5),
+            Set(gKPIOpenRAID,    19),
+            Set(gRAIDRiskCt,      6),
+            Set(gRAIDIssueCt,     5),
+            Set(gRAIDActionCt,    5),
+            Set(gRAIDDecCt,       3),
+            ClearCollect(
+                colTasks,
+                'IS Project Tasks'
+            ),
+            ClearCollect(
+                colRAID,
+                Filter(
+                    'IS Project RAID',
+                    Status.Value = "Open"
+                )
+            ),
+            ClearCollect(
+                colGates,
+                'IS Project Gates'
+            ),
+            ClearCollect(
+                colConfig,
+                'IS Portfolio Config'
+            )
+        );
+        Set(gEBCDate,         Coalesce(LookUp(colConfig, Key = "RoomReadyDate").ConfigValue,     Date(2026, 8, 15)));
+        Set(gStateFairDate,   Coalesce(LookUp(colConfig, Key = "StateFairStart").ConfigValue,    Date(2026, 8, 21)));
+        Set(gTCCFinalDate,    Coalesce(LookUp(colConfig, Key = "TCCFinalComplete").ConfigValue,  Date(2026, 12, 31)));
+        Set(gDaysToEBC,       DateDiff(Today(), gEBCDate,        TimeUnit.Days));
+        Set(gDaysToStateFair, DateDiff(Today(), gStateFairDate,  TimeUnit.Days));
+        Set(gDaysToTCCFinal,  DateDiff(Today(), gTCCFinalDate,   TimeUnit.Days));
+        Set(gDaysToHardStop,  gDaysToStateFair);
+        Set(
+            gPortfolioStart,
+            If(
+                CountRows(Filter(colGates, Project.Value = "Portfolio", Not(IsBlank(TargetDate)))) > 0,
+                Min(Filter(colGates, Project.Value = "Portfolio", Not(IsBlank(TargetDate))), TargetDate),
+                Date(2026, 1, 1)
+            )
+        );
+        Set(
+            gPortfolioEnd,
+            If(
+                CountRows(Filter(colGates, Project.Value = "Portfolio", Not(IsBlank(TargetDate)))) > 0,
+                Max(Filter(colGates, Project.Value = "Portfolio", Not(IsBlank(TargetDate))), TargetDate),
+                Date(2027, 6, 30)
+            )
+        );
+        Set(gPortfolioWindowDays, Max(1, DateDiff(gPortfolioStart, gPortfolioEnd, TimeUnit.Days)));
+        Set(
+            gPortfolioTodayPct,
+            Max(0, Min(100,
+                Round(DateDiff(gPortfolioStart, Today(), TimeUnit.Days) / gPortfolioWindowDays * 100, 1)
+            ))
+        );
+        ClearCollect(
+            gPortfolioGates,
+            ForAll(
+                Sort(
+                    Filter(colGates, Project.Value = "Portfolio", Not(IsBlank(TargetDate))),
+                    TargetDate
+                ) As _g,
+                {
+                    Title:       _g.Title,
+                    Label:       Switch(
+                                     _g.Title,
+                                     "P-01", "IS Kickoff",
+                                     "P-02", "SteerCo #1",
+                                     "P-03", "Notice of Award",
+                                     "P-04", "NTP",
+                                     "P-05", "Construction Start",
+                                     "P-06", "IS Build",
+                                     "P-07", "Go-Live / Complete",
+                                     _g.Title
+                                 ),
+                    Status:      Lower(_g.GateStatus.Value),
+                    TargetDate:  _g.TargetDate,
+                    TargetLabel: Text(_g.TargetDate, "[$-en-US]mmm yyyy"),
+                    LeftPct:     Max(0, Min(100,
+                                     Round(DateDiff(gPortfolioStart, _g.TargetDate, TimeUnit.Days) / gPortfolioWindowDays * 100, 1)
+                                 ))
+                }
+            )
+        );
+        ClearCollect(
+            colProjSummary,
+            ForAll(
+                Distinct(colTasks, Project.Value) As projItem,
+                With(
+                    {
+                        _projKey: projItem.Value,
+                        _grp: Filter(colTasks, Project.Value = projItem.Value)
+                    },
+                    {
+                        ProjectID:     _projKey,
+                        TotalTasks:    CountRows(_grp),
+                        CompleteTasks: CountRows(Filter(_grp, 'Percent Complete' >= 100)),
+                        OverdueTasks:  CountRows(Filter(_grp, 'Percent Complete' < 100 And Not(IsBlank(PlannedEnd)) And PlannedEnd < Today())),
+                        PctComplete:
+                            If(CountRows(_grp) > 0,
+                               Round(CountRows(Filter(_grp, 'Percent Complete' >= 100)) / CountRows(_grp) * 100, 0),
+                               0)
+                    }
+                )
+            )
+        );
+        If(
+            CountRows(colTasks) > 0,
+            Concurrent(
+                Set(gKPITotalTasks, CountRows(colTasks)),
+                Set(gKPIOverdue,
+                    CountRows(Filter(colTasks,
+                        'Percent Complete' < 100 And
+                        Not(IsBlank(PlannedEnd)) And
+                        PlannedEnd < Today()
+                    ))
+                ),
+                Set(gKPIAvgComplete,
+                    Round(Average(colTasks, 'Percent Complete'), 0)
+                ),
+                Set(gKPICritical,
+                    CountRows(Filter(colTasks, RAGStatus.Value = "Red" Or RAGStatus.Value = "Blocked – Construction"))
+                ),
+                Set(gKPIOpenRAID,   CountRows(colRAID)),
+                Set(gRAIDRiskCt,    CountRows(Filter(colRAID, 'RAID Type'.Value = "Risk"))),
+                Set(gRAIDIssueCt,   CountRows(Filter(colRAID, 'RAID Type'.Value = "Issue"))),
+                Set(gRAIDActionCt,  CountRows(Filter(colRAID, 'RAID Type'.Value = "Action"))),
+                Set(gRAIDDecCt,     CountRows(Filter(colRAID, 'RAID Type'.Value = "Decision")))
+            )
+        );
+        ClearCollect(
+            gExecCardData,
+            {Name:"TCC Expansion",  Phase:"Pre-Construction",OvrTxt:"At Risk", OvrBg:"#FFF3E0",OvrFg:"#F57C00",SchTxt:"Ahead",  SchBg:"#E8F5E9",SchFg:"#2E7D32",RskTxt:"Medium",  RskBg:"#FFF3E0",RskFg:"#F57C00",WorkPct:45,TimePct:22,ProgColor:"#2E7D32",FlagTxt:"▲ 45 / 22%",FlagColor:"#2E7D32"},
+            {Name:"Solacom NG911",  Phase:"RFP Development", OvrTxt:"At Risk", OvrBg:"#FFF3E0",OvrFg:"#F57C00",SchTxt:"Behind",  SchBg:"#FFEBEE",SchFg:"#C62828",RskTxt:"Tracking",RskBg:"#E3F2FD",RskFg:"#0054A4",WorkPct:28,TimePct:35,ProgColor:"#F57C00",FlagTxt:"▼ 28 / 35%",FlagColor:"#C62828"},
+            {Name:"VuWall POC",     Phase:"PO / Procurement",OvrTxt:"Active",  OvrBg:"#E3F2FD",OvrFg:"#0054A4",SchTxt:"On Time", SchBg:"#E8F5E9",SchFg:"#2E7D32",RskTxt:"Medium",  RskBg:"#FFF3E0",RskFg:"#F57C00",WorkPct:15,TimePct:16,ProgColor:"#0054A4",FlagTxt:"● 15 / 16%",FlagColor:"#0054A4"}
+        );
+        Set(
+            gProjects,
+            Table(
+                {ID: "TCC Expansion",  Name: "TCC Expansion",          ShortCode: "TCC",    RowIdx: 1,
+                 AccentColor: cP222,   LightColor: cP222Light,   RAG: "Amber",
+                 StartDate: Date(2026,3,1), EndDate: Date(2027,3,31),
+                 GateStrip: "G-01 [OK]  G-02 [...]  G-03 [...]  G-04 [...]  G-05 [...]  G-13 [...]"},
+                {ID: "NG911 Refresh",  Name: "Solacom NG911 Refresh",  ShortCode: "NG911",  RowIdx: 2,
+                 AccentColor: cP193,   LightColor: cP193Light,   RAG: "Red",
+                 StartDate: Date(2026,1,1), EndDate: Date(2026,12,31),
+                 GateStrip: "G-01 [OK]  G-02 [OK]  G-03 [!]  G-04 [...]  G-05 [...]  G-13 [...]"},
+                {ID: "VuWall",         Name: "VuWall Video Wall POC",  ShortCode: "VuWall", RowIdx: 3,
+                 AccentColor: cP11138, LightColor: cP11138Light, RAG: "Amber",
+                 StartDate: Date(2026,3,1), EndDate: Date(2026,8,31),
+                 GateStrip: "G-01 [OK]  G-02 [OK]  G-03 [X]  G-04 [...]  G-05 [...]  G-13 [...]"}
+            )
+        );
+        ClearCollect(
+            gProjectRowData,
+            ForAll(
+                gProjects As _p,
+                With(
+                    {
+                        _taskDates: Filter(colTasks, Project.Value = _p.ID, Not(IsBlank(PlannedStart)), Not(IsBlank(PlannedEnd))),
+                        _hardStart: _p.StartDate,
+                        _hardEnd:   _p.EndDate
+                    },
+                    With(
+                        {
+                            _sd: If(CountRows(_taskDates) > 0, Min(_taskDates, PlannedStart), _hardStart),
+                            _ed: If(CountRows(_taskDates) > 0, Max(_taskDates, PlannedEnd),   _hardEnd)
+                        },
+                        {
+                            ID:            _p.ID,
+                            Name:          _p.Name,
+                            ShortCode:     _p.ShortCode,
+                            RAG:           _p.RAG,
+                            GateStrip:     With(
+                                {
+                                    _tt: Switch(_p.ID,
+                                        "TCC Expansion", "Construction Gate",
+                                        "NG911 Refresh", "Milestone",
+                                        "VuWall",        "Milestone",
+                                        "Milestone"
+                                    )
+                                },
+                                With(
+                                    {
+                                        _pgRaw: Filter(colTasks, Project.Value = _p.ID, TaskType.Value = _tt)
+                                    },
+                                    With(
+                                        {
+                                            _pgAll: Sort(_pgRaw, Coalesce(PlannedEnd, Date(2999,12,31))),
+                                            _nAll:  CountRows(_pgRaw),
+                                            _wDays: Max(1, DateDiff(_sd, _ed, TimeUnit.Days))
+                                        },
+                                        If(_nAll > 0,
+                                            "<div style='position:relative;width:100%;height:44px;flex:1 1 auto'><div style='position:absolute;top:9px;left:2px;right:2px;height:2px;background:#D6D6D6;border-radius:1px'></div>" &
+                                            Concat(
+                                                ForAll(
+                                                    Sequence(_nAll) As _idx,
+                                                    With(
+                                                        { _task: Last(FirstN(_pgAll, _idx.Value)) },
+                                                        With(
+                                                            {
+                                                                _pos: If(
+                                                                    IsBlank(_task.PlannedEnd),
+                                                                    Round((_idx.Value - 0.5) / _nAll * 100, 1),
+                                                                    Max(0, Min(100, Round(DateDiff(_sd, _task.PlannedEnd, TimeUnit.Days) / _wDays * 100, 1)))
+                                                                ),
+                                                                _rag: Lower(Coalesce(_task.RAGStatus.Value, "not started")),
+                                                                _done: Or(_task.PercentComplete >= 100, Not(IsBlank(_task.ActualEnd)))
+                                                            },
+                                                            {
+                                                                h:
+                                                                    "<div style='position:absolute;top:2px;left:" & _pos & "%;transform:translateX(-50%);text-align:center;width:14px'>" &
+                                                                    "<div style='width:14px;height:14px;border-radius:7px;background:" &
+                                                                    If(Or(_done, _rag = "complete"), "#2E7D32",
+                                                                        Switch(_rag,
+                                                                            "red",                  "#C62828",
+                                                                            "amber",                "#F59E0B",
+                                                                            "green",                "#FFFFFF",
+                                                                            "blocked-construction", "#C62828",
+                                                                            "#F5F5F4"
+                                                                        )
+                                                                    ) &
+                                                                    ";border:2px solid " &
+                                                                    If(Or(_done, _rag = "complete"), "#2E7D32",
+                                                                        Switch(_rag,
+                                                                            "red",                  "#C62828",
+                                                                            "amber",                "#D97706",
+                                                                            "green",                "#0054A4",
+                                                                            "blocked-construction", "#C62828",
+                                                                            "#D6D6D6"
+                                                                        )
+                                                                    ) &
+                                                                    "'></div></div>"
+                                                            }
+                                                        )
+                                                    )
+                                                ),
+                                                h,
+                                                ""
+                                            ) &
+                                            "</div>",
+                                            "<span style='font-size:10px;color:#9CA3AF;font-style:italic'>no milestones yet</span>"
+                                        )
+                                    )
+                                )
+                            ),
+                            StartDate:     _sd,
+                            EndDate:       _ed,
+                            PctComplete:   Value(LookUp(colProjSummary, ProjectID = _p.ID, PctComplete)),
+                            TaskCount:     Value(LookUp(colProjSummary, ProjectID = _p.ID, TotalTasks)),
+                            DoneCount:     Value(LookUp(colProjSummary, ProjectID = _p.ID, CompleteTasks)),
+                            OverdueCount:  Value(LookUp(colProjSummary, ProjectID = _p.ID, OverdueTasks)),
+                            TimePct:       Max(0, Min(100, Round((DateDiff(_sd, Today(), TimeUnit.Days) / Max(1, DateDiff(_sd, _ed, TimeUnit.Days))) * 100, 0)))
+                        }
+                    )
+                )
+            )
+        );
+        ClearCollect(
+            gDecisions,
+            ForAll(
+                Sequence(Min(4, CountRows(Filter(colRAID, 'RAID Type'.Value = "Decision", Status.Value = "Open")))) As _n,
+                With(
+                    {_d: Last(FirstN(Filter(colRAID, 'RAID Type'.Value = "Decision", Status.Value = "Open"), _n.Value))},
+                    {
+                        Idx:     _n.Value,
+                        Code:    Concatenate("D-", Text(_n.Value, "00")),
+                        SpId:    _d.ID,
+                        Title:   Trim(Substitute(Substitute(_d.Title, "Decision:", ""), "decision:", "")),
+                        Project: _d.Project.Value,
+                        ColorBg: Switch(Mod(_n.Value - 1, 4), 0, "#FFEBEE", 1, "#FFEDD5", 2, "#DBEAFE", "#EDE9FE"),
+                        ColorFg: Switch(Mod(_n.Value - 1, 4), 0, "#C62828", 1, "#9A3412", 2, "#1E40AF", "#5B21B6")
+                    }
+                )
+            )
+        );
+    Host As hostControl.DefaultHostControlVariant:
+        OnCancel: =false
+        OnEdit: =false
+        OnNew: =false
+        OnSave: =false
+        OnView: =false

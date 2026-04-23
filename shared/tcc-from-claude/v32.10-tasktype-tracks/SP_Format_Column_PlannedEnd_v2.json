@@ -1,0 +1,863 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/sp/v2/column-formatting.schema.json",
+  "elmType": "div",
+  "style": {
+    "display": "flex",
+    "flex-direction": "column",
+    "align-items": "flex-start",
+    "gap": "2px"
+  },
+  "children": [
+    {
+      "elmType": "span",
+      "txtContent": {
+        "operator": "toDateString()",
+        "operands": [
+          "@currentField"
+        ]
+      },
+      "style": {
+        "font-size": "12px",
+        "font-weight": {
+          "operator": "?",
+          "operands": [
+            {
+              "operator": "&&",
+              "operands": [
+                {
+                  "operator": "<",
+                  "operands": [
+                    "@currentField",
+                    "@now"
+                  ]
+                },
+                {
+                  "operator": "!",
+                  "operands": [
+                    {
+                      "operator": "||",
+                      "operands": [
+                        {
+                          "operator": "==",
+                          "operands": [
+                            "[$PctComplete]",
+                            100
+                          ]
+                        },
+                        {
+                          "operator": "!=",
+                          "operands": [
+                            "[$ActualEnd]",
+                            ""
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "700",
+            "400"
+          ]
+        },
+        "color": {
+          "operator": "?",
+          "operands": [
+            {
+              "operator": "==",
+              "operands": [
+                "@currentField",
+                ""
+              ]
+            },
+            "#94a3b8",
+            {
+              "operator": "?",
+              "operands": [
+                {
+                  "operator": "||",
+                  "operands": [
+                    {
+                      "operator": "==",
+                      "operands": [
+                        "[$PctComplete]",
+                        100
+                      ]
+                    },
+                    {
+                      "operator": "!=",
+                      "operands": [
+                        "[$ActualEnd]",
+                        ""
+                      ]
+                    }
+                  ]
+                },
+                "#64748b",
+                {
+                  "operator": "?",
+                  "operands": [
+                    {
+                      "operator": "&&",
+                      "operands": [
+                        {
+                          "operator": "<",
+                          "operands": [
+                            "@currentField",
+                            "@now"
+                          ]
+                        },
+                        {
+                          "operator": "!",
+                          "operands": [
+                            {
+                              "operator": "||",
+                              "operands": [
+                                {
+                                  "operator": "==",
+                                  "operands": [
+                                    "[$PctComplete]",
+                                    100
+                                  ]
+                                },
+                                {
+                                  "operator": "!=",
+                                  "operands": [
+                                    "[$ActualEnd]",
+                                    ""
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "#991b1b",
+                    {
+                      "operator": "?",
+                      "operands": [
+                        {
+                          "operator": "&&",
+                          "operands": [
+                            {
+                              "operator": ">=",
+                              "operands": [
+                                "@currentField",
+                                "@now"
+                              ]
+                            },
+                            {
+                              "operator": "<",
+                              "operands": [
+                                {
+                                  "operator": "-",
+                                  "operands": [
+                                    "@currentField",
+                                    "@now"
+                                  ]
+                                },
+                                604800000
+                              ]
+                            },
+                            {
+                              "operator": "!",
+                              "operands": [
+                                {
+                                  "operator": "||",
+                                  "operands": [
+                                    {
+                                      "operator": "==",
+                                      "operands": [
+                                        "[$PctComplete]",
+                                        100
+                                      ]
+                                    },
+                                    {
+                                      "operator": "!=",
+                                      "operands": [
+                                        "[$ActualEnd]",
+                                        ""
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "#92400e",
+                        {
+                          "operator": "?",
+                          "operands": [
+                            {
+                              "operator": "&&",
+                              "operands": [
+                                {
+                                  "operator": ">=",
+                                  "operands": [
+                                    "@currentField",
+                                    "@now"
+                                  ]
+                                },
+                                {
+                                  "operator": "==",
+                                  "operands": [
+                                    {
+                                      "operator": "getMonth",
+                                      "operands": [
+                                        "@currentField"
+                                      ]
+                                    },
+                                    {
+                                      "operator": "getMonth",
+                                      "operands": [
+                                        "@now"
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "operator": "==",
+                                  "operands": [
+                                    {
+                                      "operator": "getYear",
+                                      "operands": [
+                                        "@currentField"
+                                      ]
+                                    },
+                                    {
+                                      "operator": "getYear",
+                                      "operands": [
+                                        "@now"
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "operator": "!",
+                                  "operands": [
+                                    {
+                                      "operator": "||",
+                                      "operands": [
+                                        {
+                                          "operator": "==",
+                                          "operands": [
+                                            "[$PctComplete]",
+                                            100
+                                          ]
+                                        },
+                                        {
+                                          "operator": "!=",
+                                          "operands": [
+                                            "[$ActualEnd]",
+                                            ""
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            "#854d0e",
+                            "#334155"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "elmType": "span",
+      "txtContent": {
+        "operator": "?",
+        "operands": [
+          {
+            "operator": "==",
+            "operands": [
+              "@currentField",
+              ""
+            ]
+          },
+          "",
+          {
+            "operator": "?",
+            "operands": [
+              {
+                "operator": "||",
+                "operands": [
+                  {
+                    "operator": "==",
+                    "operands": [
+                      "[$PctComplete]",
+                      100
+                    ]
+                  },
+                  {
+                    "operator": "!=",
+                    "operands": [
+                      "[$ActualEnd]",
+                      ""
+                    ]
+                  }
+                ]
+              },
+              "",
+              {
+                "operator": "?",
+                "operands": [
+                  {
+                    "operator": "&&",
+                    "operands": [
+                      {
+                        "operator": "<",
+                        "operands": [
+                          "@currentField",
+                          "@now"
+                        ]
+                      },
+                      {
+                        "operator": "!",
+                        "operands": [
+                          {
+                            "operator": "||",
+                            "operands": [
+                              {
+                                "operator": "==",
+                                "operands": [
+                                  "[$PctComplete]",
+                                  100
+                                ]
+                              },
+                              {
+                                "operator": "!=",
+                                "operands": [
+                                  "[$ActualEnd]",
+                                  ""
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "OVERDUE",
+                  {
+                    "operator": "?",
+                    "operands": [
+                      {
+                        "operator": "&&",
+                        "operands": [
+                          {
+                            "operator": ">=",
+                            "operands": [
+                              "@currentField",
+                              "@now"
+                            ]
+                          },
+                          {
+                            "operator": "<",
+                            "operands": [
+                              {
+                                "operator": "-",
+                                "operands": [
+                                  "@currentField",
+                                  "@now"
+                                ]
+                              },
+                              604800000
+                            ]
+                          },
+                          {
+                            "operator": "!",
+                            "operands": [
+                              {
+                                "operator": "||",
+                                "operands": [
+                                  {
+                                    "operator": "==",
+                                    "operands": [
+                                      "[$PctComplete]",
+                                      100
+                                    ]
+                                  },
+                                  {
+                                    "operator": "!=",
+                                    "operands": [
+                                      "[$ActualEnd]",
+                                      ""
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      "Due this week",
+                      {
+                        "operator": "?",
+                        "operands": [
+                          {
+                            "operator": "&&",
+                            "operands": [
+                              {
+                                "operator": ">=",
+                                "operands": [
+                                  "@currentField",
+                                  "@now"
+                                ]
+                              },
+                              {
+                                "operator": "==",
+                                "operands": [
+                                  {
+                                    "operator": "getMonth",
+                                    "operands": [
+                                      "@currentField"
+                                    ]
+                                  },
+                                  {
+                                    "operator": "getMonth",
+                                    "operands": [
+                                      "@now"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "operator": "==",
+                                "operands": [
+                                  {
+                                    "operator": "getYear",
+                                    "operands": [
+                                      "@currentField"
+                                    ]
+                                  },
+                                  {
+                                    "operator": "getYear",
+                                    "operands": [
+                                      "@now"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "operator": "!",
+                                "operands": [
+                                  {
+                                    "operator": "||",
+                                    "operands": [
+                                      {
+                                        "operator": "==",
+                                        "operands": [
+                                          "[$PctComplete]",
+                                          100
+                                        ]
+                                      },
+                                      {
+                                        "operator": "!=",
+                                        "operands": [
+                                          "[$ActualEnd]",
+                                          ""
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          "Due this month",
+                          ""
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "style": {
+        "font-size": "10px",
+        "font-weight": "600",
+        "padding": "1px 8px",
+        "border-radius": "8px",
+        "display": {
+          "operator": "?",
+          "operands": [
+            {
+              "operator": "||",
+              "operands": [
+                {
+                  "operator": "&&",
+                  "operands": [
+                    {
+                      "operator": "<",
+                      "operands": [
+                        "@currentField",
+                        "@now"
+                      ]
+                    },
+                    {
+                      "operator": "!",
+                      "operands": [
+                        {
+                          "operator": "||",
+                          "operands": [
+                            {
+                              "operator": "==",
+                              "operands": [
+                                "[$PctComplete]",
+                                100
+                              ]
+                            },
+                            {
+                              "operator": "!=",
+                              "operands": [
+                                "[$ActualEnd]",
+                                ""
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "operator": "&&",
+                  "operands": [
+                    {
+                      "operator": ">=",
+                      "operands": [
+                        "@currentField",
+                        "@now"
+                      ]
+                    },
+                    {
+                      "operator": "<",
+                      "operands": [
+                        {
+                          "operator": "-",
+                          "operands": [
+                            "@currentField",
+                            "@now"
+                          ]
+                        },
+                        604800000
+                      ]
+                    },
+                    {
+                      "operator": "!",
+                      "operands": [
+                        {
+                          "operator": "||",
+                          "operands": [
+                            {
+                              "operator": "==",
+                              "operands": [
+                                "[$PctComplete]",
+                                100
+                              ]
+                            },
+                            {
+                              "operator": "!=",
+                              "operands": [
+                                "[$ActualEnd]",
+                                ""
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "operator": "&&",
+                  "operands": [
+                    {
+                      "operator": ">=",
+                      "operands": [
+                        "@currentField",
+                        "@now"
+                      ]
+                    },
+                    {
+                      "operator": "==",
+                      "operands": [
+                        {
+                          "operator": "getMonth",
+                          "operands": [
+                            "@currentField"
+                          ]
+                        },
+                        {
+                          "operator": "getMonth",
+                          "operands": [
+                            "@now"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "operator": "==",
+                      "operands": [
+                        {
+                          "operator": "getYear",
+                          "operands": [
+                            "@currentField"
+                          ]
+                        },
+                        {
+                          "operator": "getYear",
+                          "operands": [
+                            "@now"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "operator": "!",
+                      "operands": [
+                        {
+                          "operator": "||",
+                          "operands": [
+                            {
+                              "operator": "==",
+                              "operands": [
+                                "[$PctComplete]",
+                                100
+                              ]
+                            },
+                            {
+                              "operator": "!=",
+                              "operands": [
+                                "[$ActualEnd]",
+                                ""
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "inline",
+            "none"
+          ]
+        },
+        "color": {
+          "operator": "?",
+          "operands": [
+            {
+              "operator": "&&",
+              "operands": [
+                {
+                  "operator": "<",
+                  "operands": [
+                    "@currentField",
+                    "@now"
+                  ]
+                },
+                {
+                  "operator": "!",
+                  "operands": [
+                    {
+                      "operator": "||",
+                      "operands": [
+                        {
+                          "operator": "==",
+                          "operands": [
+                            "[$PctComplete]",
+                            100
+                          ]
+                        },
+                        {
+                          "operator": "!=",
+                          "operands": [
+                            "[$ActualEnd]",
+                            ""
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "#991b1b",
+            {
+              "operator": "?",
+              "operands": [
+                {
+                  "operator": "&&",
+                  "operands": [
+                    {
+                      "operator": ">=",
+                      "operands": [
+                        "@currentField",
+                        "@now"
+                      ]
+                    },
+                    {
+                      "operator": "<",
+                      "operands": [
+                        {
+                          "operator": "-",
+                          "operands": [
+                            "@currentField",
+                            "@now"
+                          ]
+                        },
+                        604800000
+                      ]
+                    },
+                    {
+                      "operator": "!",
+                      "operands": [
+                        {
+                          "operator": "||",
+                          "operands": [
+                            {
+                              "operator": "==",
+                              "operands": [
+                                "[$PctComplete]",
+                                100
+                              ]
+                            },
+                            {
+                              "operator": "!=",
+                              "operands": [
+                                "[$ActualEnd]",
+                                ""
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "#92400e",
+                "#854d0e"
+              ]
+            }
+          ]
+        },
+        "background-color": {
+          "operator": "?",
+          "operands": [
+            {
+              "operator": "&&",
+              "operands": [
+                {
+                  "operator": "<",
+                  "operands": [
+                    "@currentField",
+                    "@now"
+                  ]
+                },
+                {
+                  "operator": "!",
+                  "operands": [
+                    {
+                      "operator": "||",
+                      "operands": [
+                        {
+                          "operator": "==",
+                          "operands": [
+                            "[$PctComplete]",
+                            100
+                          ]
+                        },
+                        {
+                          "operator": "!=",
+                          "operands": [
+                            "[$ActualEnd]",
+                            ""
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "#fecdd3",
+            {
+              "operator": "?",
+              "operands": [
+                {
+                  "operator": "&&",
+                  "operands": [
+                    {
+                      "operator": ">=",
+                      "operands": [
+                        "@currentField",
+                        "@now"
+                      ]
+                    },
+                    {
+                      "operator": "<",
+                      "operands": [
+                        {
+                          "operator": "-",
+                          "operands": [
+                            "@currentField",
+                            "@now"
+                          ]
+                        },
+                        604800000
+                      ]
+                    },
+                    {
+                      "operator": "!",
+                      "operands": [
+                        {
+                          "operator": "||",
+                          "operands": [
+                            {
+                              "operator": "==",
+                              "operands": [
+                                "[$PctComplete]",
+                                100
+                              ]
+                            },
+                            {
+                              "operator": "!=",
+                              "operands": [
+                                "[$ActualEnd]",
+                                ""
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "#fde68a",
+                "#fef3c7"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
