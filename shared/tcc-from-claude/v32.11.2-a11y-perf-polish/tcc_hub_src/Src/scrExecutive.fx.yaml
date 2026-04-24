@@ -1,0 +1,339 @@
+scrExecutive As screen:
+    Fill: =cBgPage
+    Height: =768
+    Width: =1366
+    OnVisible: |-
+        =Set(gSelectedProject, "");
+        Set(gFilterRAIDType, "All")
+    rcvtHdr As rectangle:
+        X: =0
+        Y: =0
+        Width: =Parent.Width
+        Height: =72
+        Fill: =cHeader
+    lblHdrOrg As label:
+        X: =24
+        Y: =0
+        Width: =216
+        Height: =72
+        Text: ="Metropolitan Council"
+        Color: =cTextWhite
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Size: =13
+        LetterSpacing: =2
+        VerticalAlign: =VerticalAlign.Middle
+    lblHdrSep As label:
+        X: =242
+        Y: =0
+        Width: =28
+        Height: =72
+        Text: ="//"
+        Color: =cAccent
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Lighter
+        Size: =16
+        VerticalAlign: =VerticalAlign.Middle
+        Align: =Align.Center
+    lblHdrTitle As label:
+        X: =272
+        Y: =0
+        Width: =260
+        Height: =72
+        Text: ="IS Portfolio Hub"
+        Color: =cTextWhite
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Size: =13
+        LetterSpacing: =2
+        VerticalAlign: =VerticalAlign.Middle
+    lblHdrScreenName As label:
+        X: =820
+        Y: =8
+        Width: =360
+        Height: =28
+        Text: ="EXECUTIVE DASHBOARD"
+        Color: =RGBA(255,255,255,0.85)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =11
+        VerticalAlign: =VerticalAlign.Bottom
+        Align: =Align.Right
+    lblHdrDate As label:
+        X: =820
+        Y: =36
+        Width: =360
+        Height: =28
+        Text: =Concatenate("Data: ", Text(Today(), "[$-en-US]mmmm dd, yyyy"))
+        Color: =RGBA(255,255,255,0.55)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Normal
+        Size: =11
+        VerticalAlign: =VerticalAlign.Top
+        Align: =Align.Right
+    btnNavDetail As button:
+        X: =1232
+        Y: =20
+        Width: =110
+        Height: =32
+        Text: ="Detail"
+        Color: =cTextWhite
+        Fill: =cAccent
+        HoverFill: =cAccentDark
+        BorderColor: =RGBA(0,0,0,0)
+        BorderThickness: =0
+        RadiusTopLeft: =6
+        RadiusTopRight: =6
+        RadiusBottomLeft: =6
+        RadiusBottomRight: =6
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =11
+        OnSelect: =Navigate(scrDetail, ScreenTransition.Fade)
+    rcvtAccentBar As rectangle:
+        X: =0
+        Y: =72
+        Width: =Parent.Width
+        Height: =3
+        Fill: =cAccent
+    htmlKPIStrip As htmlViewer:
+        X: =24
+        Y: =75
+        Width: =Parent.Width - 48
+        Height: =70
+        Fill: =RGBA(0,0,0,0)
+        AccessibleLabel: =Concatenate("Portfolio KPI strip. Total tasks ", Text(gKPITotalTasks), ". Average complete ", Text(gKPIAvgComplete), " percent. Overdue ", Text(gKPIOverdue), ". Open RAID ", Text(gKPIOpenRAID), ". Critical ", Text(gKPICritical), ". Days to EBC ", Text(gDaysToEBC), ". Days to State Fair ", Text(gDaysToStateFair), ". Days to TCC Final ", Text(gDaysToTCCFinal), ".")
+        HtmlText: |-
+            ="<div style='display:grid;grid-template-columns:repeat(8,1fr);gap:10px;font-family:Segoe UI,Arial,sans-serif;height:100%;box-sizing:border-box'><div style='background:#FCFCFC;border:1px solid #D6D6D6;border-left:4px solid #0054A4;border-radius:6px;padding:8px 14px;box-shadow:0 1px 3px rgba(0,0,0,0.08);display:flex;flex-direction:column;gap:2px;box-sizing:border-box'><div style='font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#757575;font-weight:600'>TOTAL TASKS</div><div style='font-size:24px;font-weight:700;color:#043971;line-height:1.1'>" & Text(gKPITotalTasks) & "</div></div><div style='background:#FCFCFC;border:1px solid #D6D6D6;border-left:4px solid #0054A4;border-radius:6px;padding:8px 14px;box-shadow:0 1px 3px rgba(0,0,0,0.08);display:flex;flex-direction:column;gap:2px;box-sizing:border-box'><div style='font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#757575;font-weight:600'>AVG COMPLETE</div><div style='font-size:24px;font-weight:700;color:#F57C00;line-height:1.1'>" & Text(gKPIAvgComplete) & "%</div></div><div style='background:#FCFCFC;border:1px solid #D6D6D6;border-left:4px solid " & If(gKPIOverdue > 0, "#C62828", "#0054A4") & ";border-radius:6px;padding:8px 14px;box-shadow:0 1px 3px rgba(0,0,0,0.08);display:flex;flex-direction:column;gap:2px;box-sizing:border-box'><div style='font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#757575;font-weight:600'>OVERDUE TASKS</div><div style='font-size:24px;font-weight:700;color:" & If(gKPIOverdue > 0, "#C62828", "#043971") & ";line-height:1.1'>" & Text(gKPIOverdue) & "</div></div><div style='background:#FCFCFC;border:1px solid #D6D6D6;border-left:4px solid #0054A4;border-radius:6px;padding:8px 14px;box-shadow:0 1px 3px rgba(0,0,0,0.08);display:flex;flex-direction:column;gap:2px;box-sizing:border-box'><div style='font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#757575;font-weight:600'>OPEN RAID</div><div style='font-size:24px;font-weight:700;color:#043971;line-height:1.1'>" & Text(gKPIOpenRAID) & "</div></div><div style='background:#FCFCFC;border:1px solid #D6D6D6;border-left:4px solid " & If(gKPICritical > 0, "#C62828", "#757575") & ";border-radius:6px;padding:8px 14px;box-shadow:0 1px 3px rgba(0,0,0,0.08);display:flex;flex-direction:column;gap:2px;box-sizing:border-box'><div style='font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#757575;font-weight:600'>CRITICAL</div><div style='font-size:24px;font-weight:700;color:" & If(gKPICritical > 0, "#C62828", "#043971") & ";line-height:1.1'>" & Text(gKPICritical) & "</div></div><div style='background:#FCFCFC;border:1px solid #D6D6D6;border-left:4px solid #0097D0;border-radius:6px;padding:8px 14px;box-shadow:0 1px 3px rgba(0,0,0,0.08);display:flex;flex-direction:column;gap:2px;box-sizing:border-box'><div style='font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#757575;font-weight:600'>DAYS TO EBC</div><div style='font-size:24px;font-weight:700;color:#0097D0;line-height:1.1'>" & Text(gDaysToEBC) & "d</div></div><div style='background:#FCFCFC;border:1px solid #D6D6D6;border-left:4px solid #F57C00;border-radius:6px;padding:8px 14px;box-shadow:0 1px 3px rgba(0,0,0,0.08);display:flex;flex-direction:column;gap:2px;box-sizing:border-box'><div style='font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#757575;font-weight:600'>DAYS TO STATE FAIR</div><div style='font-size:24px;font-weight:700;color:#F57C00;line-height:1.1'>" & Text(gDaysToStateFair) & "d</div></div><div style='background:#FCFCFC;border:1px solid #D6D6D6;border-left:4px solid #6B46C1;border-radius:6px;padding:8px 14px;box-shadow:0 1px 3px rgba(0,0,0,0.08);display:flex;flex-direction:column;gap:2px;box-sizing:border-box'><div style='font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#757575;font-weight:600'>DAYS TO TCC FINAL</div><div style='font-size:24px;font-weight:700;color:#6B46C1;line-height:1.1'>" & Text(gDaysToTCCFinal) & "d</div></div></div>"
+    htmlDecisions As htmlViewer:
+        X: =0
+        Y: =139
+        Width: =Parent.Width
+        Height: =80
+        Fill: =RGBA(0,0,0,0)
+        AccessibleLabel: =Concatenate("Decisions required band. ", Text(CountRows(gDecisions)), " open decisions.")
+        HtmlText: |-
+            ="<div style='padding:8px 24px;background:#FFF3E0;border-left:4px solid #F57C00;font-family:Segoe UI,Arial,sans-serif;height:100%;box-sizing:border-box;display:flex;flex-direction:column;gap:4px'><div style='font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#F57C00;font-weight:700'>&#9888; DECISIONS REQUIRED (" & CountRows(gDecisions) & ")</div><div style='display:grid;grid-template-columns:repeat(4,1fr);gap:8px'>" & Concat(gDecisions, "<div style='background:" & ColorBg & ";border-left:3px solid " & ColorFg & ";border-radius:4px;padding:6px 10px;display:flex;flex-direction:column;gap:2px'><div style='font-size:10px;font-weight:700;color:" & ColorFg & ";letter-spacing:.04em'>" & Code & "</div><div style='font-size:11px;color:#343A40;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.35'>" & Title & "</div></div>", "") & If(CountRows(gDecisions) = 0, "<div style='padding:6px 10px;color:#757575;font-size:11px;font-style:italic'>No open decisions at this time.</div>", "") & "</div></div>"
+    htmlPortfolioTrack As htmlViewer:
+        X: =0
+        Y: =219
+        Width: =Parent.Width
+        Height: =80
+        Fill: =RGBA(0,0,0,0)
+        AccessibleLabel: ="Portfolio milestone timeline. Shows construction and IS gates from kickoff through project complete, with today marker."
+        HtmlText: |-
+            ="<div style='padding:6px 24px 8px 24px;background:#FCFCFC;border-top:1px solid #D6D6D6;border-bottom:1px solid #D6D6D6;font-family:Segoe UI,Arial,sans-serif;height:100%;box-sizing:border-box;display:flex;flex-direction:column;gap:2px'><div style='display:flex;justify-content:space-between;align-items:center'><div style='font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#043971;font-weight:700'>CONSTRUCTION &amp; IS MILESTONES  <span style='background:#DBEAFE;color:#1E40AF;padding:1px 6px;border-radius:8px;margin-left:4px;font-size:9px'>" & CountRows(gPortfolioGates) & " gates</span></div><div style='font-size:9px;color:#9CA3AF;font-family:Consolas,monospace'>" & Text(gPortfolioStart, "[$-en-US]mmm yyyy") & " &ndash; " & Text(gPortfolioEnd, "[$-en-US]mmm yyyy") & "</div></div><div style='position:relative;flex:1;margin:6px 12px 0 12px'><div style='position:absolute;top:10px;left:0;right:0;height:3px;background:#E5E7EB;border-radius:2px'></div>" & Concat(gPortfolioGates, "<div style='position:absolute;top:0;left:" & LeftPct & "%'><div style='width:18px;height:18px;border-radius:9px;background:" & Switch(Status, "complete", "#2E7D32", "active", "#FFFFFF", "blocked", "#C62828", "#E5E7EB") & ";border:3px solid " & Switch(Status, "complete", "#2E7D32", "active", "#0054A4", "blocked", "#C62828", "#D6D6D6") & ";box-shadow:" & If(Status = "active", "0 0 0 3px rgba(0,84,164,0.18)", "none") & ";transform:translateX(-50%)'></div><div style='font-size:9px;font-weight:600;color:#252525;margin-top:3px;white-space:nowrap;line-height:1.1;transform:" & If(LeftPct >= 92, "translateX(-100%)", LeftPct <= 8, "translateX(0)", "translateX(-50%)") & ";text-align:" & If(LeftPct >= 92, "right", LeftPct <= 8, "left", "center") & "'>" & Label & "</div><div style='font-size:8px;color:#6B7280;font-family:Consolas,monospace;line-height:1;transform:" & If(LeftPct >= 92, "translateX(-100%)", LeftPct <= 8, "translateX(0)", "translateX(-50%)") & ";text-align:" & If(LeftPct >= 92, "right", LeftPct <= 8, "left", "center") & "'>" & TargetLabel & "</div></div>", "") & "<div style='position:absolute;top:-2px;left:" & gPortfolioTodayPct & "%;width:2px;height:26px;background:#C62828;transform:translateX(-50%)'></div><div style='position:absolute;top:-14px;left:" & gPortfolioTodayPct & "%;transform:translateX(-50%);font-size:8px;color:#C62828;font-weight:700;letter-spacing:.05em;white-space:nowrap'>TODAY</div></div></div>"
+    rcvtPHdrBg As rectangle:
+        X: =0
+        Y: =303
+        Width: =Parent.Width
+        Height: =30
+        Fill: =cSurface
+        BorderColor: =cBorderLight
+        BorderThickness: =1
+    lblPHdrName As label:
+        X: =30
+        Y: =303
+        Width: =220
+        Height: =30
+        Text: ="PROJECT"
+        Color: =cTextSub
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Size: =10
+        LetterSpacing: =1
+        VerticalAlign: =VerticalAlign.Middle
+    lblPHdrProg As label:
+        X: =260
+        Y: =303
+        Width: =480
+        Height: =30
+        Text: ="PROGRESS  /  TASK STATS"
+        Color: =cTextSub
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Size: =10
+        LetterSpacing: =1
+        VerticalAlign: =VerticalAlign.Middle
+    lblPHdrRAG As label:
+        X: =760
+        Y: =303
+        Width: =80
+        Height: =30
+        Text: ="STATUS"
+        Color: =cTextSub
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Size: =10
+        LetterSpacing: =1
+        VerticalAlign: =VerticalAlign.Middle
+        Align: =Align.Center
+    lblPHdrGates As label:
+        X: =860
+        Y: =303
+        Width: =480
+        Height: =30
+        Text: ="MILESTONE TRACK"
+        Color: =cTextSub
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Size: =10
+        LetterSpacing: =1
+        VerticalAlign: =VerticalAlign.Middle
+    "galExecProjects As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0'":
+        X: =0
+        Y: =333
+        Width: =Parent.Width
+        Height: =351
+        Items: =gProjectRowData
+        Layout: =Layout.Vertical
+        TemplateSize: =117
+        ShowScrollbar: =false
+        BorderColor: =RGBA(0,0,0,0)
+        BorderThickness: =0
+        Fill: =RGBA(0,0,0,0)
+        WrapCount: =1
+        htmlProjRow As htmlViewer:
+            X: =12
+            Y: =8
+            Width: =Parent.TemplateWidth - 24
+            Height: =Parent.TemplateHeight - 16
+            Fill: =RGBA(0,0,0,0)
+            AccessibleLabel: =Concatenate(ThisItem.Name, " project row. Progress ", Text(ThisItem.PctComplete), " percent. RAG ", ThisItem.RAG, ". ", Text(ThisItem.TaskCount), " tasks, ", Text(ThisItem.DoneCount), " done, ", Text(ThisItem.OverdueCount), " overdue.")
+            HtmlText: |-
+                =With({_ac:Switch(ThisItem.ShortCode,"TCC","#043971","NG911","#0097D0","VuWall","#0054A4","#757575"),_al:Switch(ThisItem.ShortCode,"TCC","#DBEAFE","NG911","#E0F2FE","VuWall","#DBEAFE","#F5F5F4"),_rb:Switch(ThisItem.RAG,"Green","#E8F5E9","Amber","#FFF3E0","Red","#FFEBEE","#F5F5F4"),_rf:Switch(ThisItem.RAG,"Green","#2E7D32","Amber","#F57C00","Red","#C62828","#757575"),_rl:Switch(ThisItem.RAG,"Green","G","Amber","A","Red","R","-"),_dlta:ThisItem.TimePct-ThisItem.PctComplete,_pc:If(ThisItem.TimePct-ThisItem.PctComplete<=0,"#2E7D32",ThisItem.TimePct-ThisItem.PctComplete<=15,"#F57C00","#C62828"),_flagTxt:If(ThisItem.TimePct-ThisItem.PctComplete<=0,Concatenate("&#9650; ", Text(0-(ThisItem.TimePct-ThisItem.PctComplete)), "% ahead"),Concatenate("&#9660; ", Text(ThisItem.TimePct-ThisItem.PctComplete), "% behind")),_flagCol:If(ThisItem.TimePct-ThisItem.PctComplete<=0,"#2E7D32",ThisItem.TimePct-ThisItem.PctComplete<=15,"#F57C00","#C62828")}, "<div style='background:#FCFCFC;border:1px solid #D6D6D6;border-left:4px solid " & _ac & ";border-radius:6px;padding:14px 18px;box-shadow:0 1px 3px rgba(0,0,0,0.08);display:grid;grid-template-columns:280px 1fr 60px 170px;gap:20px;align-items:center;font-family:Segoe UI,Arial,sans-serif;height:100%;box-sizing:border-box'><div style='display:flex;flex-direction:column;gap:8px'><div style='font-size:15px;font-weight:700;color:#043971'>" & ThisItem.Name & "</div><div style='display:flex;gap:6px;align-items:center'><span style='font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;background:" & _al & ";color:" & _ac & "'>" & ThisItem.ShortCode & "</span><span style='font-size:10px;color:#757575;font-family:Consolas,monospace'>P-" & ThisItem.ShortCode & "</span></div></div><div style='display:flex;flex-direction:column;gap:6px'><div style='display:flex;align-items:center;gap:10px'><div style='flex:1;height:8px;background:#EDEDED;border-radius:4px;position:relative'><div style='height:100%;width:" & ThisItem.PctComplete & "%;background:" & _pc & ";border-radius:4px'></div><div style='position:absolute;top:-3px;left:" & ThisItem.TimePct & "%;width:2px;height:14px;background:#343A40;transform:translateX(-50%)'></div></div><span style='font-size:13px;font-weight:700;color:#334155;min-width:38px;text-align:right'>" & ThisItem.PctComplete & "%</span></div><div style='display:flex;gap:10px;align-items:center;font-size:10px;flex-wrap:wrap'><span style='color:#6B7280'>" & ThisItem.TaskCount & " tasks</span><span style='color:#2E7D32;font-weight:600'>" & ThisItem.DoneCount & " done</span>" & If(ThisItem.OverdueCount>0, "<span style='padding:2px 8px;border-radius:10px;background:#C62828;color:white;font-weight:700;font-size:9px'>" & ThisItem.OverdueCount & " overdue</span>", "") & "<span style='font-weight:700;color:" & _flagCol & "'>" & _flagTxt & "</span></div></div><div style='display:flex;justify-content:center'><span style='display:inline-block;width:32px;height:32px;line-height:32px;text-align:center;border-radius:16px;background:" & _rb & ";color:" & _rf & ";font-weight:700;font-size:14px'>" & _rl & "</span></div><div style='position:relative;width:100%;overflow:hidden'>" & ThisItem.GateStrip & "</div></div>")
+        btnRowOverlay As button:
+            X: =0
+            Y: =0
+            Width: =Parent.TemplateWidth
+            Height: =Parent.TemplateHeight
+            Text: =""
+            Color: =RGBA(0,0,0,0)
+            Fill: =RGBA(0,0,0,0)
+            HoverFill: =RGBA(0,84,164,0.04)
+            BorderColor: =RGBA(0,0,0,0)
+            BorderThickness: =0
+            Font: =Font.'Segoe UI'
+            Size: =11
+            OnSelect: |-
+                =Set(gSelectedProject, ThisItem.ID);
+                Navigate(scrDetail, ScreenTransition.Fade)
+    rcvtExCtxBand As rectangle:
+        X: =0
+        Y: =686
+        Width: =Parent.Width
+        Height: =40
+        Fill: =cHeader
+    lblExCtxL1 As label:
+        X: =24
+        Y: =689
+        Width: =80
+        Height: =13
+        Text: ="AS OF"
+        Color: =RGBA(255,255,255,0.4)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =8
+        LetterSpacing: =1
+    lblExCtxV1 As label:
+        X: =24
+        Y: =702
+        Width: =160
+        Height: =18
+        Text: =Text(Today(), "[$-en-US]mmmm d, yyyy")
+        Color: =cTextWhite
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =11
+    lblExCtxL2 As label:
+        X: =210
+        Y: =689
+        Width: =80
+        Height: =13
+        Text: ="PROJECTS"
+        Color: =RGBA(255,255,255,0.4)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =8
+        LetterSpacing: =1
+    lblExCtxV2 As label:
+        X: =210
+        Y: =702
+        Width: =60
+        Height: =18
+        Text: =Text(CountRows(gProjects))
+        Color: =cTextWhite
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =11
+    lblExCtxL3 As label:
+        X: =310
+        Y: =689
+        Width: =100
+        Height: =13
+        Text: ="EBC COUNTDOWN"
+        Color: =RGBA(255,255,255,0.4)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =8
+        LetterSpacing: =1
+    lblExCtxV3 As label:
+        X: =310
+        Y: =702
+        Width: =130
+        Height: =18
+        Text: =Text(gDaysToEBC) & "d remaining"
+        Color: =If(gDaysToEBC < 30, RGBA(239,83,80,1), cTextWhite)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =11
+    lblExCtxL4 As label:
+        X: =470
+        Y: =689
+        Width: =100
+        Height: =13
+        Text: ="OPEN RAID"
+        Color: =RGBA(255,255,255,0.4)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =8
+        LetterSpacing: =1
+    lblExCtxV4 As label:
+        X: =470
+        Y: =702
+        Width: =80
+        Height: =18
+        Text: =Text(gKPIOpenRAID)
+        Color: =If(gKPIOpenRAID > 10, RGBA(239,83,80,1), cTextWhite)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Semibold
+        Size: =11
+    rcvtExFooter As rectangle:
+        X: =0
+        Y: =726
+        Width: =Parent.Width
+        Height: =42
+        Fill: =cFooter
+    lblExFooterL As label:
+        X: =24
+        Y: =726
+        Width: =700
+        Height: =42
+        Text: =Concatenate(gOrgName, "  //  ", gAppTitle, "  ", gAppVersion)
+        Color: =RGBA(255,255,255,0.35)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Normal
+        Size: =10
+        VerticalAlign: =VerticalAlign.Middle
+    lblExFooterR As label:
+        X: =966
+        Y: =726
+        Width: =376
+        Height: =42
+        Text: =Concatenate("Build: ", gBuildDate, "  |  IS Department")
+        Color: =RGBA(255,255,255,0.35)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Normal
+        Size: =10
+        VerticalAlign: =VerticalAlign.Middle
+        Align: =Align.Right
